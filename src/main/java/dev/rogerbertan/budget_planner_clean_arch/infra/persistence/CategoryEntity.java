@@ -2,6 +2,7 @@ package dev.rogerbertan.budget_planner_clean_arch.infra.persistence;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.enums.Type;
 import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -30,6 +31,14 @@ public class CategoryEntity {
     }
 
     public CategoryEntity() {}
+
+    public CategoryEntity(Long id, String name, Type type, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.createdAt = createdAt;
+    }
+
 
     @PrePersist
     protected void onCreate() {
