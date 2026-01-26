@@ -6,6 +6,7 @@ import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.CategoryEntityMapp
 import dev.rogerbertan.budget_planner_clean_arch.infra.persistence.CategoryEntity;
 import dev.rogerbertan.budget_planner_clean_arch.infra.persistence.CategoryRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class CategoryRepositoryGateway implements CategoryGateway {
     }
 
     @Override
+    @Transactional
     public Category createCategory(Category category) {
 
         CategoryEntity savedEntity = categoryRepository.save(entityMapper.toEntity(category));
@@ -45,6 +47,7 @@ public class CategoryRepositoryGateway implements CategoryGateway {
     }
 
     @Override
+    @Transactional
     public Category updateCategory(Category category) {
 
         CategoryEntity updatedEntity = categoryRepository.save(entityMapper.toEntity(category));
@@ -53,6 +56,7 @@ public class CategoryRepositoryGateway implements CategoryGateway {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long id) {
 
         categoryRepository.deleteById(id);
