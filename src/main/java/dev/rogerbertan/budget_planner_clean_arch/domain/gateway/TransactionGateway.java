@@ -1,12 +1,12 @@
 package dev.rogerbertan.budget_planner_clean_arch.domain.gateway;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Transaction;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TransactionGateway {
 
-    List<Transaction> findAllTransactions();
+    Page<Transaction> findAllTransactions(Pageable pageable);
     Transaction findTransactionById(Long id);
     Transaction createTransaction(Transaction transaction);
     Transaction updateTransaction(Transaction transaction);

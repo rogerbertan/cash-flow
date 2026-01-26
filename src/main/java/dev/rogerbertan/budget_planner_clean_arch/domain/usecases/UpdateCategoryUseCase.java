@@ -22,9 +22,9 @@ public class UpdateCategoryUseCase {
 
         return categoryGateway.updateCategory(
                 new Category(
-                    existingCategory.id(),
-                    existingCategory.name(),
-                    existingCategory.type(),
+                    category.id(),
+                    category.name(),
+                    category.type(),
                 LocalDateTime.now())
         );
     }
