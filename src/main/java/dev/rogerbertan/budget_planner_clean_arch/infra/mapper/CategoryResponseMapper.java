@@ -4,6 +4,8 @@ import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Category;
 import dev.rogerbertan.budget_planner_clean_arch.infra.dto.CategoryResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CategoryResponseMapper {
 
@@ -13,6 +15,12 @@ public class CategoryResponseMapper {
                 category.name(),
                 category.type()
         );
+    }
+
+    public List<CategoryResponse> toListDTO(List<Category> categories) {
+        return categories.stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     public Category toEntity(CategoryResponse dto) {
