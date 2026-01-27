@@ -2,6 +2,7 @@ package dev.rogerbertan.budget_planner_clean_arch.domain.usecases;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Category;
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.CategoryGateway;
+import dev.rogerbertan.budget_planner_clean_arch.infra.exception.ResourceNotFoundException;
 
 public class FindCategoryByIdUseCase {
 
@@ -16,7 +17,7 @@ public class FindCategoryByIdUseCase {
         Category category = categoryGateway.findCategoryById(id);
 
         if (category == null) {
-            throw new IllegalArgumentException("Category not found with id: " + id);
+            throw new ResourceNotFoundException("Category", "id: " + id);
         }
 
         return category;

@@ -2,6 +2,7 @@ package dev.rogerbertan.budget_planner_clean_arch.domain.usecases;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Transaction;
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.TransactionGateway;
+import dev.rogerbertan.budget_planner_clean_arch.infra.exception.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ public class UpdateTransactionUseCase {
 
         Transaction existingTransaction = transactionGateway.findTransactionById(transaction.id());
         if (existingTransaction == null) {
-            throw new IllegalArgumentException("Transaction not found with id: " + transaction.id());
+            throw new ResourceNotFoundException("Transaction", "id: " + transaction.id());
         }
 
         return new Transaction(

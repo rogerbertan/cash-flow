@@ -2,6 +2,8 @@ package dev.rogerbertan.budget_planner_clean_arch.infra.gateway;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Transaction;
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.TransactionGateway;
+import dev.rogerbertan.budget_planner_clean_arch.infra.exception.InvalidTransactionException;
+import dev.rogerbertan.budget_planner_clean_arch.infra.exception.ResourceNotFoundException;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.TransactionEntityMapper;
 import dev.rogerbertan.budget_planner_clean_arch.infra.persistence.CategoryEntity;
 import dev.rogerbertan.budget_planner_clean_arch.infra.persistence.CategoryRepository;
@@ -80,14 +82,14 @@ public class TransactionRepositoryGateway implements TransactionGateway {
     private void validateCategoryExists(Long categoryId) {
 
         if (!categoryRepository.existsById(categoryId)) {
-            throw new IllegalArgumentException("Category not found with id: " + categoryId);
+            throw new ResourceNotFoundException("Category", "id: " + categoryId);
         }
     }
 
     private void validateAmountPositive(BigDecimal amount) {
 
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount must be positive: " + amount);
+            throw new InvalidTransactionException("Amount must be positive: " + amount);
         }
     }
 
@@ -95,7 +97,7 @@ public class TransactionRepositoryGateway implements TransactionGateway {
 
         CategoryEntity category = categoryRepository.findById(transaction.category().id()).get();
         if (!transaction.type().equals(category.getType())) {
-            throw new IllegalArgumentException("Transaction type must be equal to category type");
+            throw new InvalidTransactionException("Transaction type must be equal to category type");
         }
     }
 }

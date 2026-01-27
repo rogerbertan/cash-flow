@@ -1,6 +1,7 @@
 package dev.rogerbertan.budget_planner_clean_arch.domain.usecases;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.CategoryGateway;
+import dev.rogerbertan.budget_planner_clean_arch.infra.exception.ResourceNotFoundException;
 
 public class DeleteCategoryUseCase{
 
@@ -13,7 +14,7 @@ public class DeleteCategoryUseCase{
     public void execute(Long id) {
 
         if (categoryGateway.findCategoryById(id) == null) {
-            throw new IllegalArgumentException("Category not found with id: " + id);
+            throw new ResourceNotFoundException("Category", "id: " + id);
         }
 
         categoryGateway.deleteCategory(id);
