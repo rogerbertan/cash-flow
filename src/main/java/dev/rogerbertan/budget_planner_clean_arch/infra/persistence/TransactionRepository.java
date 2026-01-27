@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
-    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM TransactionEntity t " +
             "WHERE t.type = :type")
     BigDecimal sumAmountByType(@Param("type") Type type);
 
-    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM TransactionEntity t " +
             "WHERE t.type = :type " +
             "AND YEAR(t.transactionDate) = :year " +
             "AND MONTH(t.transactionDate) = :month")
