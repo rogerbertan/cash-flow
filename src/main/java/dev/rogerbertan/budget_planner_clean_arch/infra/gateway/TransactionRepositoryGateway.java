@@ -51,11 +51,9 @@ public class TransactionRepositoryGateway implements TransactionGateway {
     @Transactional
     public Transaction createTransaction(Transaction transaction) {
 
-        validateCategoryExists(transaction.category().id());
         validateAmountPositive(transaction.amount());
-        validateTypeIsEqualCategoryType(transaction);
+        CategoryEntity category = validateTypeIsEqualCategoryType(transaction);
 
-        CategoryEntity category = categoryRepository.findById(transaction.category().id()).get();
         TransactionEntity entity = entityMapper.toEntity(transaction);
         entity.setCategory(category);
 
@@ -66,7 +64,6 @@ public class TransactionRepositoryGateway implements TransactionGateway {
     @Transactional
     public Transaction updateTransaction(Transaction transaction) {
 
-        validateCategoryExists(transaction.category().id());
         validateAmountPositive(transaction.amount());
         validateTypeIsEqualCategoryType(transaction);
 
@@ -107,13 +104,6 @@ public class TransactionRepositoryGateway implements TransactionGateway {
         return transactionRepository.findCategorySummariesByMonthAndYear(month, year);
     }
 
-    private void validateCategoryExists(Long categoryId) {
-
-        if (!categoryRepository.existsById(categoryId)) {
-            throw new ResourceNotFoundException("Category", "id: " + categoryId);
-        }
-    }
-
     private void validateAmountPositive(BigDecimal amount) {
 
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -121,11 +111,15 @@ public class TransactionRepositoryGateway implements TransactionGateway {
         }
     }
 
-    private void validateTypeIsEqualCategoryType(Transaction transaction) {
+    private CategoryEntity validateTypeIsEqualCategoryType(Transaction transaction) {
 
-        CategoryEntity category = categoryRepository.findById(transaction.category().id()).get();
+        CategoryEntity category = categoryRepository.findById(transaction.category().id())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id: " + transaction.category().id()));
+
         if (!transaction.type().equals(category.getType())) {
             throw new InvalidTransactionException("Transaction type must be equal to category type");
         }
+
+        return category;
     }
 }
