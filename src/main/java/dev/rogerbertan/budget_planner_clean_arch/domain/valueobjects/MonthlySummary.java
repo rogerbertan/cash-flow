@@ -1,0 +1,10 @@
+package dev.rogerbertan.budget_planner_clean_arch.domain.valueobjects;
+
+import java.math.BigDecimal;
+
+public record MonthlySummary(
+        BigDecimal totalIncome,
+        BigDecimal totalExpense,
+        BigDecimal netBalance
+) {
+}
