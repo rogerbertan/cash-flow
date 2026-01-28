@@ -21,14 +21,16 @@ public class UpdateTransactionUseCase {
             throw new ResourceNotFoundException("Transaction", "id: " + transaction.id());
         }
 
-        return new Transaction(
-                transaction.id(),
-                transaction.type(),
-                transaction.amount(),
-                transaction.description(),
-                transaction.category(),
-                transaction.transactionDate(),
-                LocalDateTime.now()
+        return transactionGateway.updateTransaction(
+                new Transaction(
+                        transaction.id(),
+                        transaction.type(),
+                        transaction.amount(),
+                        transaction.description(),
+                        transaction.category(),
+                        transaction.transactionDate(),
+                        LocalDateTime.now()
+                )
         );
     }
 }
