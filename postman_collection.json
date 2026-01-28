@@ -1,0 +1,449 @@
+{
+  "info": {
+    "name": "Budget Planner Clean Architecture API",
+    "description": "Complete API collection for Budget Planner application implementing Clean Architecture with Spring Boot 4.0.2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "budget-planner-api"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            },
+            "description": "Check if the API is running and healthy"
+          },
+          "response": []
+        }
+      ],
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "Retrieve all categories in the system"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "1"
+              ]
+            },
+            "description": "Retrieve a specific category by its ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Salary\",\n  \"type\": \"INCOME\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "Create a new category. Type can be INCOME or EXPENSE. Category names must be unique."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category - Expense Example",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Groceries\",\n  \"type\": \"EXPENSE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "Create a new expense category"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Monthly Salary\",\n  \"type\": \"INCOME\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "1"
+              ]
+            },
+            "description": "Update an existing category by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "1"
+              ]
+            },
+            "description": "Delete a category by ID. Categories cannot be deleted if transactions reference them."
+          },
+          "response": []
+        }
+      ],
+      "description": "Category management endpoints. Categories represent income or expense types."
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Get All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions?page=0&size=20&sort=createdAt,desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number (0-indexed)"
+                },
+                {
+                  "key": "size",
+                  "value": "20",
+                  "description": "Number of items per page (default: 20)"
+                },
+                {
+                  "key": "sort",
+                  "value": "createdAt,desc",
+                  "description": "Sort field and direction (default: createdAt,desc)"
+                }
+              ]
+            },
+            "description": "Retrieve all transactions with pagination. Returns a paginated response with transaction data."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transaction By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "1"
+              ]
+            },
+            "description": "Retrieve a specific transaction by its ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Transaction - Income",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"INCOME\",\n  \"amount\": 5000.00,\n  \"description\": \"Monthly salary payment\",\n  \"categoryId\": 1,\n  \"transactionDate\": \"2026-01-27\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions"
+              ]
+            },
+            "description": "Create a new income transaction. Amount must be positive. Transaction type must match category type. Category must exist."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Transaction - Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"EXPENSE\",\n  \"amount\": 150.50,\n  \"description\": \"Weekly grocery shopping\",\n  \"categoryId\": 2,\n  \"transactionDate\": \"2026-01-27\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions"
+              ]
+            },
+            "description": "Create a new expense transaction"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"EXPENSE\",\n  \"amount\": 175.00,\n  \"description\": \"Updated grocery shopping amount\",\n  \"category\": {\n    \"id\": 2,\n    \"name\": \"Groceries\",\n    \"type\": \"EXPENSE\"\n  },\n  \"transactionDate\": \"2026-01-27\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "1"
+              ]
+            },
+            "description": "Update an existing transaction by ID. Full category object must be provided in update request."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Transaction",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "1"
+              ]
+            },
+            "description": "Delete a transaction by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Transaction management endpoints. Transactions represent income or expense entries linked to categories."
+    },
+    {
+      "name": "Summary",
+      "item": [
+        {
+          "name": "Get Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/summary/balance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "summary",
+                "balance"
+              ]
+            },
+            "description": "Get the overall balance (total income - total expenses)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Monthly Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/summary/monthly?month=1&year=2026",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "summary",
+                "monthly"
+              ],
+              "query": [
+                {
+                  "key": "month",
+                  "value": "1",
+                  "description": "Month number (1-12)"
+                },
+                {
+                  "key": "year",
+                  "value": "2026",
+                  "description": "Year (e.g., 2026)"
+                }
+              ]
+            },
+            "description": "Get monthly summary including total income, total expenses, and net balance for a specific month and year"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Categories Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/summary/categories?month=1&year=2026",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "summary",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "month",
+                  "value": "1",
+                  "description": "Month number (1-12)"
+                },
+                {
+                  "key": "year",
+                  "value": "2026",
+                  "description": "Year (e.g., 2026)"
+                }
+              ]
+            },
+            "description": "Get summary breakdown by category for a specific month and year, showing total income and expenses per category"
+          },
+          "response": []
+        }
+      ],
+      "description": "Summary and reporting endpoints for financial analysis"
+    }
+  ]
+}
