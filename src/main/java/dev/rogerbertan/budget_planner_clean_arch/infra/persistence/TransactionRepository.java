@@ -26,10 +26,10 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
             @Param("year") int year,
             @Param("type") Type type);
 
-    @Query("SELECT new CategorySummary(" +
+    @Query("SELECT new dev.rogerbertan.budget_planner_clean_arch.domain.valueobjects.CategorySummary(" +
             "c.name, " +
-            "COALESCE(SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE 0 END), 0), " +
-            "COALESCE(SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE 0 END), 0)) " +
+            "COALESCE(SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE CAST(0 AS BigDecimal) END), CAST(0 AS BigDecimal)), " +
+            "COALESCE(SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE CAST(0 AS BigDecimal) END), CAST(0 AS BigDecimal))) " +
             "FROM TransactionEntity t " +
             "JOIN t.category c " +
             "WHERE YEAR(t.transactionDate) = :year " +
