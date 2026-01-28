@@ -81,4 +81,19 @@ public class BeanConfiguration {
     public DeleteTransactionUseCase deleteTransactionUseCase(TransactionGateway transactionGateway) {
         return new DeleteTransactionUseCase(transactionGateway);
     }
+
+    @Bean
+    public GetBalanceUseCase getBalanceUseCase(TransactionGateway transactionGateway) {
+        return new GetBalanceUseCase(transactionGateway);
+    }
+
+    @Bean
+    public GetMonthlySummaryUseCase getMonthlySummaryUseCase(TransactionGateway transactionGateway) {
+        return new GetMonthlySummaryUseCase(transactionGateway);
+    }
+
+    @Bean
+    public GetCategoriesSummaryUseCase getCategoriesSummaryUseCase(TransactionGateway transactionGateway) {
+        return new GetCategoriesSummaryUseCase(transactionGateway);
+    }
 }

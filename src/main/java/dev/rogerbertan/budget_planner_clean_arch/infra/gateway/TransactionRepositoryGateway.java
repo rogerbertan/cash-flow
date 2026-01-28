@@ -1,7 +1,9 @@
 package dev.rogerbertan.budget_planner_clean_arch.infra.gateway;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Transaction;
+import dev.rogerbertan.budget_planner_clean_arch.domain.enums.Type;
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.TransactionGateway;
+import dev.rogerbertan.budget_planner_clean_arch.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.budget_planner_clean_arch.infra.exception.InvalidTransactionException;
 import dev.rogerbertan.budget_planner_clean_arch.infra.exception.ResourceNotFoundException;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.TransactionEntityMapper;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
 public class TransactionRepositoryGateway implements TransactionGateway {
@@ -77,6 +80,31 @@ public class TransactionRepositoryGateway implements TransactionGateway {
     public void deleteTransaction(Long id) {
 
         transactionRepository.deleteById(id);
+    }
+
+    @Override
+    public BigDecimal getTotalIncome() {
+        return transactionRepository.sumAmountByType(Type.INCOME);
+    }
+
+    @Override
+    public BigDecimal getTotalExpense() {
+        return transactionRepository.sumAmountByType(Type.EXPENSE);
+    }
+
+    @Override
+    public BigDecimal getMonthlyIncome(int month, int year) {
+        return transactionRepository.sumAmountByMonthAndYearAndType(month, year, Type.INCOME);
+    }
+
+    @Override
+    public BigDecimal getMonthlyExpense(int month, int year) {
+        return transactionRepository.sumAmountByMonthAndYearAndType(month, year, Type.EXPENSE);
+    }
+
+    @Override
+    public List<CategorySummary> getCategorySummaries(int month, int year) {
+        return transactionRepository.findCategorySummariesByMonthAndYear(month, year);
     }
 
     private void validateCategoryExists(Long categoryId) {

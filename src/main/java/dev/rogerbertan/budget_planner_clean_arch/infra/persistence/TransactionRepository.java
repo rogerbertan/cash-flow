@@ -1,6 +1,7 @@
 package dev.rogerbertan.budget_planner_clean_arch.infra.persistence;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.enums.Type;
+import dev.rogerbertan.budget_planner_clean_arch.domain.valueobjects.CategorySummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,16 +26,16 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
             @Param("year") int year,
             @Param("type") Type type);
 
-
-//    @Query("SELECT new com.bertan.budgetplanner.dto.CategoriesSummaryResponseDTO(" +
-//            "t.category.name, " +
-//            "COALESCE(SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE 0 END), 0), " +
-//            "COALESCE(SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE 0 END), 0)) " +
-//            "FROM Transaction t JOIN t.category c " +
-//            "WHERE YEAR(t.transactionDate) = :year " +
-//            "AND MONTH(t.transactionDate) = :month " +
-//            "GROUP BY c.name")
-//    List<CategoriesSummaryResponseDTO> findCategorySummariesByMonthAndYear(
-//            @Param("month") int month,
-//            @Param("year") int year);
+    @Query("SELECT new CategorySummary(" +
+            "c.name, " +
+            "COALESCE(SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE 0 END), 0), " +
+            "COALESCE(SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE 0 END), 0)) " +
+            "FROM TransactionEntity t " +
+            "JOIN t.category c " +
+            "WHERE YEAR(t.transactionDate) = :year " +
+            "AND MONTH(t.transactionDate) = :month " +
+            "GROUP BY c.id, c.name")
+    List<CategorySummary> findCategorySummariesByMonthAndYear(
+            @Param("month") int month,
+            @Param("year") int year);
 }
