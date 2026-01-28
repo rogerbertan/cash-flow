@@ -44,9 +44,11 @@ public class TransactionController {
     public ResponseEntity<Page<TransactionResponse>> getAllTransactions(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "createdAt,desc") String[] sort
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "DESC") String sortDirection
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<Transaction> transactions = findAllTransactionsUseCase.execute(pageable);
         return ResponseEntity.ok(transactions.map(transactionResponseMapper::toDTO));
     }

@@ -197,7 +197,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/transactions?page=0&size=20&sort=createdAt,desc",
+              "raw": "{{baseUrl}}/api/transactions?page=0&size=20&sortBy=createdAt&sortDirection=DESC",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -217,9 +217,14 @@
                   "description": "Number of items per page (default: 20)"
                 },
                 {
-                  "key": "sort",
-                  "value": "createdAt,desc",
-                  "description": "Sort field and direction (default: createdAt,desc)"
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Sort field (default: createdAt). Options: createdAt, transactionDate, amount"
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "DESC",
+                  "description": "Sort direction (default: DESC). Options: ASC, DESC"
                 }
               ]
             },
