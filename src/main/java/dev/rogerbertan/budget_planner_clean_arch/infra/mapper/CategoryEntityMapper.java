@@ -23,7 +23,7 @@ public class CategoryEntityMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getType(),
-                LocalDateTime.now()
+                entity.getCreatedAt()
         );
     }
 }

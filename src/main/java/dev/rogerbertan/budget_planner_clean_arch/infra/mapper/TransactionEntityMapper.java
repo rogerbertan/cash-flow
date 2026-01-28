@@ -33,7 +33,7 @@ public class TransactionEntityMapper {
                 entity.getDescription(),
                 categoryEntityMapper.toDomain(entity.getCategory()),
                 entity.getTransactionDate(),
-                LocalDateTime.now()
+                entity.getCreatedAt()
         );
     }
 }
