@@ -4,6 +4,7 @@ import dev.rogerbertan.cash_flow.domain.entities.Category;
 import dev.rogerbertan.cash_flow.domain.entities.Transaction;
 import dev.rogerbertan.cash_flow.domain.enums.Type;
 import dev.rogerbertan.cash_flow.domain.valueobjects.Balance;
+import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySuggestion;
 import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.cash_flow.domain.valueobjects.MonthlySummary;
 import dev.rogerbertan.cash_flow.infra.dto.*;
@@ -338,5 +339,79 @@ public class TestDataFactory {
 
     public static CategoriesSummaryResponse createExpenseCategoriesSummaryResponse() {
         return createCategoriesSummaryResponse("Food", BigDecimal.ZERO, new BigDecimal("3000.00"));
+    }
+
+    // Category Suggestion Value Object
+    public static CategorySuggestion createCategorySuggestion(
+            Category category,
+            String confidence,
+            String rawResponse
+    ) {
+        return new CategorySuggestion(category, confidence, rawResponse);
+    }
+
+    public static CategorySuggestion createHighConfidenceSuggestion() {
+        return createCategorySuggestion(
+                createExpenseCategory(),
+                "high",
+                "Food"
+        );
+    }
+
+    public static CategorySuggestion createLowConfidenceSuggestion() {
+        return createCategorySuggestion(
+                null,
+                "low",
+                "UnknownCategory"
+        );
+    }
+
+    public static CategorySuggestion createDisabledSuggestion() {
+        return createCategorySuggestion(
+                null,
+                "disabled",
+                "AI categorization is disabled"
+        );
+    }
+
+    // Category Suggestion Request DTO
+    public static CategorySuggestionRequest createCategorySuggestionRequest(
+            String description,
+            Type type
+    ) {
+        return new CategorySuggestionRequest(description, type);
+    }
+
+    public static CategorySuggestionRequest createExpenseSuggestionRequest() {
+        return createCategorySuggestionRequest("grocery shopping", Type.EXPENSE);
+    }
+
+    public static CategorySuggestionRequest createIncomeSuggestionRequest() {
+        return createCategorySuggestionRequest("monthly salary", Type.INCOME);
+    }
+
+    // Category Suggestion Response DTO
+    public static CategorySuggestionResponse createCategorySuggestionResponse(
+            CategoryResponse category,
+            String confidence,
+            String message
+    ) {
+        return new CategorySuggestionResponse(category, confidence, message);
+    }
+
+    public static CategorySuggestionResponse createSuccessfulSuggestionResponse() {
+        return createCategorySuggestionResponse(
+                createExpenseCategoryResponse(),
+                "high",
+                "Category suggestion successful"
+        );
+    }
+
+    public static CategorySuggestionResponse createNoMatchSuggestionResponse() {
+        return createCategorySuggestionResponse(
+                null,
+                "low",
+                "No matching category found for this transaction"
+        );
     }
 }

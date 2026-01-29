@@ -4,9 +4,14 @@ import dev.rogerbertan.cash_flow.domain.entities.Category;
 import dev.rogerbertan.cash_flow.domain.entities.Transaction;
 import dev.rogerbertan.cash_flow.domain.enums.Type;
 import dev.rogerbertan.cash_flow.domain.usecases.*;
+import dev.rogerbertan.cash_flow.domain.usecases.transaction.SuggestTransactionCategoryUseCase;
+import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySuggestion;
+import dev.rogerbertan.cash_flow.infra.dto.CategorySuggestionRequest;
+import dev.rogerbertan.cash_flow.infra.dto.CategorySuggestionResponse;
 import dev.rogerbertan.cash_flow.infra.dto.TransactionCreateRequest;
 import dev.rogerbertan.cash_flow.infra.dto.TransactionResponse;
 import dev.rogerbertan.cash_flow.infra.dto.TransactionUpdateRequest;
+import dev.rogerbertan.cash_flow.infra.mapper.CategorySuggestionMapper;
 import dev.rogerbertan.cash_flow.infra.mapper.TransactionCreateMapper;
 import dev.rogerbertan.cash_flow.infra.mapper.TransactionResponseMapper;
 import dev.rogerbertan.cash_flow.infra.mapper.TransactionUpdateRequestMapper;
@@ -46,6 +51,9 @@ class TransactionControllerTest {
     private DeleteTransactionUseCase deleteTransactionUseCase;
 
     @Mock
+    private SuggestTransactionCategoryUseCase suggestTransactionCategoryUseCase;
+
+    @Mock
     private TransactionResponseMapper transactionResponseMapper;
 
     @Mock
@@ -53,6 +61,9 @@ class TransactionControllerTest {
 
     @Mock
     private TransactionUpdateRequestMapper transactionUpdateRequestMapper;
+
+    @Mock
+    private CategorySuggestionMapper categorySuggestionMapper;
 
     @InjectMocks
     private TransactionController controller;
@@ -460,5 +471,112 @@ class TransactionControllerTest {
         ArgumentCaptor<Long> idCaptor = ArgumentCaptor.forClass(Long.class);
         verify(deleteTransactionUseCase, times(1)).execute(idCaptor.capture());
         assertThat(idCaptor.getValue()).isEqualTo(123L);
+    }
+
+    // suggestCategory tests
+
+    @Test
+    void suggestCategory_ShouldReturnOkStatus_WhenSuggestionSuccessful() {
+        // Arrange
+        CategorySuggestionRequest request = TestDataFactory.createExpenseSuggestionRequest();
+        CategorySuggestion suggestion = TestDataFactory.createHighConfidenceSuggestion();
+        CategorySuggestionResponse response = TestDataFactory.createSuccessfulSuggestionResponse();
+
+        when(suggestTransactionCategoryUseCase.execute(request.description(), request.type()))
+                .thenReturn(suggestion);
+        when(categorySuggestionMapper.toDTO(suggestion)).thenReturn(response);
+
+        // Act
+        ResponseEntity<CategorySuggestionResponse> result = controller.suggestCategory(request);
+
+        // Assert
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody()).isEqualTo(response);
+        assertThat(result.getBody().confidence()).isEqualTo("high");
+        assertThat(result.getBody().message()).isEqualTo("Category suggestion successful");
+    }
+
+    @Test
+    void suggestCategory_ShouldDelegateToUseCase_WhenCalled() {
+        // Arrange
+        CategorySuggestionRequest request = TestDataFactory.createExpenseSuggestionRequest();
+        CategorySuggestion suggestion = TestDataFactory.createHighConfidenceSuggestion();
+        CategorySuggestionResponse response = TestDataFactory.createSuccessfulSuggestionResponse();
+
+        when(suggestTransactionCategoryUseCase.execute(anyString(), any(Type.class)))
+                .thenReturn(suggestion);
+        when(categorySuggestionMapper.toDTO(any())).thenReturn(response);
+
+        // Act
+        controller.suggestCategory(request);
+
+        // Assert
+        ArgumentCaptor<String> descriptionCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Type> typeCaptor = ArgumentCaptor.forClass(Type.class);
+
+        verify(suggestTransactionCategoryUseCase, times(1))
+                .execute(descriptionCaptor.capture(), typeCaptor.capture());
+
+        assertThat(descriptionCaptor.getValue()).isEqualTo("grocery shopping");
+        assertThat(typeCaptor.getValue()).isEqualTo(Type.EXPENSE);
+    }
+
+    @Test
+    void suggestCategory_ShouldReturnNoMatchResponse_WhenNoCategoryMatched() {
+        // Arrange
+        CategorySuggestionRequest request = TestDataFactory.createExpenseSuggestionRequest();
+        CategorySuggestion suggestion = TestDataFactory.createLowConfidenceSuggestion();
+        CategorySuggestionResponse response = TestDataFactory.createNoMatchSuggestionResponse();
+
+        when(suggestTransactionCategoryUseCase.execute(request.description(), request.type()))
+                .thenReturn(suggestion);
+        when(categorySuggestionMapper.toDTO(suggestion)).thenReturn(response);
+
+        // Act
+        ResponseEntity<CategorySuggestionResponse> result = controller.suggestCategory(request);
+
+        // Assert
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().suggestedCategory()).isNull();
+        assertThat(result.getBody().confidence()).isEqualTo("low");
+        assertThat(result.getBody().message()).isEqualTo("No matching category found for this transaction");
+
+        verify(suggestTransactionCategoryUseCase, times(1)).execute(request.description(), request.type());
+        verify(categorySuggestionMapper, times(1)).toDTO(suggestion);
+    }
+
+    @Test
+    void suggestCategory_ShouldHandleIncomeType_WhenIncomeTransactionProvided() {
+        // Arrange
+        CategorySuggestionRequest request = TestDataFactory.createIncomeSuggestionRequest();
+        Category incomeCategory = TestDataFactory.createIncomeCategory();
+        CategorySuggestion suggestion = TestDataFactory.createCategorySuggestion(
+                incomeCategory,
+                "high",
+                "Salary"
+        );
+        CategorySuggestionResponse response = TestDataFactory.createCategorySuggestionResponse(
+                TestDataFactory.createIncomeCategoryResponse(),
+                "high",
+                "Category suggestion successful"
+        );
+
+        when(suggestTransactionCategoryUseCase.execute(request.description(), request.type()))
+                .thenReturn(suggestion);
+        when(categorySuggestionMapper.toDTO(suggestion)).thenReturn(response);
+
+        // Act
+        ResponseEntity<CategorySuggestionResponse> result = controller.suggestCategory(request);
+
+        // Assert
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+
+        ArgumentCaptor<Type> typeCaptor = ArgumentCaptor.forClass(Type.class);
+        verify(suggestTransactionCategoryUseCase, times(1))
+                .execute(anyString(), typeCaptor.capture());
+        assertThat(typeCaptor.getValue()).isEqualTo(Type.INCOME);
     }
 }
