@@ -16,6 +16,14 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(AICategorizeException.class)
+    public ResponseEntity<ErrorResponse> handleAICategorizeException(
+            AICategorizeException ex) {
+
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+        return ResponseEntity.status(ex.getHttpStatus()).body(errorResponse);
+    }
+
     @ExceptionHandler(BudgetPlannerException.class)
     public ResponseEntity<ErrorResponse> handleBudgetPlannerException(
             BudgetPlannerException ex) {
