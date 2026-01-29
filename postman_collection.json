@@ -356,6 +356,35 @@
             "description": "Delete a transaction by ID"
           },
           "response": []
+        },
+        {
+          "name": "Suggest Category (AI)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Coffee at Starbucks\",\n  \"type\": \"EXPENSE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/suggest-category",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "suggest-category"
+              ]
+            },
+            "description": "Get AI-powered category suggestion based on transaction description and type. Returns suggested category with confidence level and explanation message."
+          },
+          "response": []
         }
       ],
       "description": "Transaction management endpoints. Transactions represent income or expense entries linked to categories."

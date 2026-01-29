@@ -50,6 +50,7 @@ Budget Planner is a RESTful API application designed to help users manage their 
 Key Features:
 - Category management for organizing transactions (INCOME/EXPENSE)
 - Transaction tracking with full CRUD operations
+- AI-powered category suggestions based on transaction descriptions
 - Paginated transaction history
 - Business rule validation (type matching, positive amounts, referential integrity)
 - Database migrations with Flyway
@@ -134,12 +135,18 @@ Follow these steps to get a local copy up and running.
    export DB_PASSWORD=postgres
    ```
 
-5. Build the project
+5. Configure Gemini API key (required for AI category suggestions)
+   ```sh
+   export GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+   Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+
+6. Build the project
    ```sh
    ./mvnw clean install
    ```
 
-6. Run the application
+7. Run the application
    ```sh
    ./mvnw spring-boot:run
    ```
@@ -212,6 +219,7 @@ Flyway migrations run automatically on startup. Migration files are located in `
 - `GET /api/transactions/{id}` - Get transaction by ID
 - `PUT /api/transactions/{id}` - Update transaction
 - `DELETE /api/transactions/{id}` - Delete transaction
+- `POST /api/transactions/suggest-category` - Get AI-powered category suggestion
 
 ### Example Request
 
@@ -233,6 +241,28 @@ Create a transaction:
   "date": "2026-01-28",
   "categoryId": 1,
   "type": "INCOME"
+}
+```
+
+Get AI category suggestion:
+`POST /api/transactions/suggest-category`
+```json
+{
+  "description": "Coffee at Starbucks",
+  "type": "EXPENSE"
+}
+```
+
+Response:
+```json
+{
+  "suggestedCategory": {
+    "id": 3,
+    "name": "Food & Dining",
+    "type": "EXPENSE"
+  },
+  "confidence": "HIGH",
+  "message": "Based on the description, this appears to be a food/dining expense."
 }
 ```
 

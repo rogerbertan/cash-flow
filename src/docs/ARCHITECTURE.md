@@ -66,7 +66,8 @@ domain/
 │       ├── FindAllTransactionsUseCase
 │       ├── FindTransactionByIdUseCase
 │       ├── UpdateTransactionUseCase
-│       └── DeleteTransactionUseCase
+│       ├── DeleteTransactionUseCase
+│       └── SuggestTransactionCategoryUseCase
 └── gateway/           # Persistence contracts (interfaces)
     ├── CategoryGateway
     └── TransactionGateway
@@ -82,12 +83,15 @@ infra/
 ├── dto/               # API Request/Response objects
 │   ├── CategoryCreateRequest
 │   ├── CategoryResponse
+│   ├── CategorySuggestionRequest
+│   ├── CategorySuggestionResponse
 │   ├── TransactionCreateRequest
 │   └── TransactionResponse
 ├── mapper/            # Object conversions
 │   ├── CategoryCreateMapper
 │   ├── CategoryUpdateRequestMapper
 │   ├── CategoryResponseMapper
+│   ├── CategorySuggestionMapper
 │   ├── TransactionCreateMapper
 │   ├── TransactionUpdateRequestMapper
 │   └── TransactionResponseMapper
