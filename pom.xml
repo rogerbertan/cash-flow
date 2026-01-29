@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.rogerbertan</groupId>
-	<artifactId>budget-planner-clean-arch</artifactId>
+	<artifactId>cash-flow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>budget-planner-clean-arch</name>
-	<description>Budget Planner to implement clean architecture</description>
+	<name>cash-flow</name>
+	<description>Daily income and expense transaction tracker using Clean Architecture</description>
 	<url/>
 	<licenses>
 		<license/>
