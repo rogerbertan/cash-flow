@@ -1,9 +1,13 @@
 package dev.rogerbertan.budget_planner_clean_arch.infra.beans;
 
+import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.AICategorizerGateway;
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.CategoryGateway;
 import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.TransactionGateway;
 import dev.rogerbertan.budget_planner_clean_arch.domain.usecases.*;
+import dev.rogerbertan.budget_planner_clean_arch.domain.usecases.transaction.SuggestTransactionCategoryUseCase;
+import dev.rogerbertan.budget_planner_clean_arch.infra.config.AIProperties;
 import dev.rogerbertan.budget_planner_clean_arch.infra.gateway.CategoryRepositoryGateway;
+import dev.rogerbertan.budget_planner_clean_arch.infra.gateway.GeminiCategorizerGateway;
 import dev.rogerbertan.budget_planner_clean_arch.infra.gateway.TransactionRepositoryGateway;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.CategoryEntityMapper;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.TransactionEntityMapper;
@@ -30,6 +34,14 @@ public class BeanConfiguration {
             TransactionEntityMapper mapper
     ) {
         return new TransactionRepositoryGateway(transactionRepository, categoryRepository, mapper);
+    }
+
+    @Bean
+    public AICategorizerGateway aiCategorizerGateway(
+            CategoryGateway categoryGateway,
+            AIProperties aiProperties
+    ) {
+        return new GeminiCategorizerGateway(categoryGateway, aiProperties);
     }
 
     @Bean
@@ -95,5 +107,13 @@ public class BeanConfiguration {
     @Bean
     public GetCategoriesSummaryUseCase getCategoriesSummaryUseCase(TransactionGateway transactionGateway) {
         return new GetCategoriesSummaryUseCase(transactionGateway);
+    }
+
+    @Bean
+    public SuggestTransactionCategoryUseCase suggestTransactionCategoryUseCase(
+            AICategorizerGateway aiCategorizerGateway,
+            CategoryGateway categoryGateway
+    ) {
+        return new SuggestTransactionCategoryUseCase(aiCategorizerGateway, categoryGateway);
     }
 }

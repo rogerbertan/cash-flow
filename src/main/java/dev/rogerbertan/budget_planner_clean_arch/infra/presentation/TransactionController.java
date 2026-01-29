@@ -2,9 +2,14 @@ package dev.rogerbertan.budget_planner_clean_arch.infra.presentation;
 
 import dev.rogerbertan.budget_planner_clean_arch.domain.entities.Transaction;
 import dev.rogerbertan.budget_planner_clean_arch.domain.usecases.*;
+import dev.rogerbertan.budget_planner_clean_arch.domain.usecases.transaction.SuggestTransactionCategoryUseCase;
+import dev.rogerbertan.budget_planner_clean_arch.domain.valueobjects.CategorySuggestion;
+import dev.rogerbertan.budget_planner_clean_arch.infra.dto.CategorySuggestionRequest;
+import dev.rogerbertan.budget_planner_clean_arch.infra.dto.CategorySuggestionResponse;
 import dev.rogerbertan.budget_planner_clean_arch.infra.dto.TransactionCreateRequest;
 import dev.rogerbertan.budget_planner_clean_arch.infra.dto.TransactionResponse;
 import dev.rogerbertan.budget_planner_clean_arch.infra.dto.TransactionUpdateRequest;
+import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.CategorySuggestionMapper;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.TransactionCreateMapper;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.TransactionResponseMapper;
 import dev.rogerbertan.budget_planner_clean_arch.infra.mapper.TransactionUpdateRequestMapper;
@@ -25,19 +30,23 @@ public class TransactionController {
     private final CreateTransactionUseCase createTransactionUseCase;
     private final UpdateTransactionUseCase updateTransactionUseCase;
     private final DeleteTransactionUseCase deleteTransactionUseCase;
+    private final SuggestTransactionCategoryUseCase suggestTransactionCategoryUseCase;
     private final TransactionResponseMapper transactionResponseMapper;
     private final TransactionCreateMapper transactionCreateMapper;
     private final TransactionUpdateRequestMapper transactionUpdateRequestMapper;
+    private final CategorySuggestionMapper categorySuggestionMapper;
 
-    public TransactionController(FindAllTransactionUseCase findAllTransactionsUseCase, FindTransactionByIdUseCase findTransactionByIdUseCase, CreateTransactionUseCase createTransactionUseCase, UpdateTransactionUseCase updateTransactionUseCase, DeleteTransactionUseCase deleteTransactionUseCase, TransactionResponseMapper transactionResponseMapper, TransactionCreateMapper transactionCreateMapper, TransactionUpdateRequestMapper transactionUpdateRequestMapper) {
+    public TransactionController(FindAllTransactionUseCase findAllTransactionsUseCase, FindTransactionByIdUseCase findTransactionByIdUseCase, CreateTransactionUseCase createTransactionUseCase, UpdateTransactionUseCase updateTransactionUseCase, DeleteTransactionUseCase deleteTransactionUseCase, SuggestTransactionCategoryUseCase suggestTransactionCategoryUseCase, TransactionResponseMapper transactionResponseMapper, TransactionCreateMapper transactionCreateMapper, TransactionUpdateRequestMapper transactionUpdateRequestMapper, CategorySuggestionMapper categorySuggestionMapper) {
         this.findAllTransactionsUseCase = findAllTransactionsUseCase;
         this.findTransactionByIdUseCase = findTransactionByIdUseCase;
         this.createTransactionUseCase = createTransactionUseCase;
         this.updateTransactionUseCase = updateTransactionUseCase;
         this.deleteTransactionUseCase = deleteTransactionUseCase;
+        this.suggestTransactionCategoryUseCase = suggestTransactionCategoryUseCase;
         this.transactionResponseMapper = transactionResponseMapper;
         this.transactionCreateMapper = transactionCreateMapper;
         this.transactionUpdateRequestMapper = transactionUpdateRequestMapper;
+        this.categorySuggestionMapper = categorySuggestionMapper;
     }
 
     @GetMapping
@@ -86,5 +95,17 @@ public class TransactionController {
 
         deleteTransactionUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/suggest-category")
+    public ResponseEntity<CategorySuggestionResponse> suggestCategory(
+            @RequestBody CategorySuggestionRequest dto
+    ) {
+        CategorySuggestion suggestion = suggestTransactionCategoryUseCase.execute(
+                dto.description(),
+                dto.type()
+        );
+
+        return ResponseEntity.ok(categorySuggestionMapper.toDTO(suggestion));
     }
 }

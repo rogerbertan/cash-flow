@@ -9,12 +9,10 @@ import dev.rogerbertan.budget_planner_clean_arch.domain.gateway.CategoryGateway;
 import dev.rogerbertan.budget_planner_clean_arch.domain.valueobjects.CategorySuggestion;
 import dev.rogerbertan.budget_planner_clean_arch.infra.config.AIProperties;
 import dev.rogerbertan.budget_planner_clean_arch.infra.exception.AICategorizeException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class GeminiCategorizerGateway implements AICategorizerGateway {
 
     private final CategoryGateway categoryGateway;
