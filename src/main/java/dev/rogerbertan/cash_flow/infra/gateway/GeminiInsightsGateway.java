@@ -25,7 +25,12 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
     public GeminiInsightsGateway(AIProperties aiProperties) {
         this.aiProperties = aiProperties;
         System.out.println("Using Gemini model for insights: " + aiProperties.getModelName());
-        this.geminiClient = initializeClient();
+
+        if (aiProperties.isEnabled() && (aiProperties.getApiKey() != null && !aiProperties.getApiKey().isEmpty())) {
+            this.geminiClient = initializeClient();
+        } else {
+            this.geminiClient = null;
+        }
     }
 
     private Client initializeClient() {
@@ -41,7 +46,7 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
 
     @Override
     public SpendingInsights generateInsights(TransactionAnalysisData analysisData) {
-        if (!aiProperties.isEnabled()) {
+        if (!aiProperties.isEnabled() || geminiClient == null) {
             return new SpendingInsights(
                     List.of("AI insights are disabled"),
                     analysisData.period(),

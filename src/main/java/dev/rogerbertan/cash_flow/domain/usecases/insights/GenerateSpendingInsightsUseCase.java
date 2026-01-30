@@ -36,21 +36,21 @@ public class GenerateSpendingInsightsUseCase {
                 analysisData.endDate()
         );
 
-        if (currentTransactions.size() < 3) {
-            return new SpendingInsights(
-                    List.of("Insufficient data for analysis. Add more transactions to get insights."),
-                    period,
-                    "Not enough data",
-                    "insufficient_data"
-            );
-        }
-
         if (currentTransactions.isEmpty()) {
             return new SpendingInsights(
                     List.of("No transactions found for this period. Start tracking your expenses!"),
                     period,
                     "No data available",
                     "no_transactions"
+            );
+        }
+
+        if (currentTransactions.size() < 3) {
+            return new SpendingInsights(
+                    List.of("Insufficient data for analysis. Add more transactions to get insights."),
+                    period,
+                    "Not enough data",
+                    "insufficient_data"
             );
         }
 
