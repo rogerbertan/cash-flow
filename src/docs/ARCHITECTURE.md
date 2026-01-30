@@ -26,6 +26,8 @@
 │  │   │  • FindAllCategoriesUseCase               │     │ │
 │  │   │  • CreateTransactionUseCase               │     │ │
 │  │   │  • FindAllTransactionsUseCase             │     │ │
+│  │   │  • SuggestTransactionCategoryUseCase      │     │ │
+│  │   │  • GenerateSpendingInsightsUseCase        │     │ │
 │  │   └───────────────────────────────────────────┘     │ │
 │  │                                                       │ │
 │  │   ┌───────────────────────────────────────────┐     │ │
@@ -33,6 +35,8 @@
 │  │   │                                           │     │ │
 │  │   │  • CategoryGateway                        │     │ │
 │  │   │  • TransactionGateway                     │     │ │
+│  │   │  • AICategorizerGateway                   │     │ │
+│  │   │  • AIInsightsGateway                      │     │ │
 │  │   └───────────────────────────────────────────┘     │ │
 │  │                                                       │ │
 │  └───────────────────────────────────────────────────────┘ │
@@ -61,16 +65,31 @@ domain/
 │   │   ├── FindCategoryByIdUseCase
 │   │   ├── UpdateCategoryUseCase
 │   │   └── DeleteCategoryUseCase
-│   └── transaction/
-│       ├── CreateTransactionUseCase
-│       ├── FindAllTransactionsUseCase
-│       ├── FindTransactionByIdUseCase
-│       ├── UpdateTransactionUseCase
-│       ├── DeleteTransactionUseCase
-│       └── SuggestTransactionCategoryUseCase
-└── gateway/           # Persistence contracts (interfaces)
-    ├── CategoryGateway
-    └── TransactionGateway
+│   ├── transaction/
+│   │   ├── CreateTransactionUseCase
+│   │   ├── FindAllTransactionsUseCase
+│   │   ├── FindTransactionByIdUseCase
+│   │   ├── UpdateTransactionUseCase
+│   │   ├── DeleteTransactionUseCase
+│   │   └── SuggestTransactionCategoryUseCase
+│   ├── summary/
+│   │   ├── GetBalanceUseCase
+│   │   ├── GetMonthlySummaryUseCase
+│   │   └── GetCategoriesSummaryUseCase
+│   └── insights/
+│       └── GenerateSpendingInsightsUseCase
+├── gateway/           # Persistence & service contracts (interfaces)
+│   ├── CategoryGateway
+│   ├── TransactionGateway
+│   ├── AICategorizerGateway
+│   └── AIInsightsGateway
+└── valueobjects/      # Immutable data structures
+    ├── CategorySuggestion
+    ├── SpendingInsights
+    ├── TransactionAnalysisData
+    ├── MonthlySummary
+    ├── Balance
+    └── CategorySummary
 ```
 
 ### Infrastructure Layer
@@ -79,12 +98,16 @@ infra/
 ├── presentation/      # REST API Controllers
 │   ├── CategoryController
 │   ├── TransactionController
+│   ├── SummaryController
+│   ├── AIInsightsController
 │   └── HealthController
 ├── dto/               # API Request/Response objects
 │   ├── CategoryCreateRequest
 │   ├── CategoryResponse
 │   ├── CategorySuggestionRequest
 │   ├── CategorySuggestionResponse
+│   ├── SpendingInsightsRequest
+│   ├── SpendingInsightsResponse
 │   ├── TransactionCreateRequest
 │   └── TransactionResponse
 ├── mapper/            # Object conversions
@@ -92,12 +115,15 @@ infra/
 │   ├── CategoryUpdateRequestMapper
 │   ├── CategoryResponseMapper
 │   ├── CategorySuggestionMapper
+│   ├── SpendingInsightsMapper
 │   ├── TransactionCreateMapper
 │   ├── TransactionUpdateRequestMapper
 │   └── TransactionResponseMapper
 ├── gateway/           # Gateway implementations
 │   ├── CategoryRepositoryGateway
-│   └── TransactionRepositoryGateway
+│   ├── TransactionRepositoryGateway
+│   ├── GeminiCategorizerGateway
+│   └── GeminiInsightsGateway
 ├── persistence/       # JPA entities & repositories
 │   ├── CategoryEntity
 │   ├── CategoryJpaRepository
@@ -108,7 +134,14 @@ infra/
 │   ├── ResourceNotFoundException
 │   ├── InvalidTransactionException
 │   ├── CategoryInUseException
+│   ├── AICategorizeException
+│   ├── AIInsightsException
 │   └── GlobalExceptionHandler
+├── config/            # Configuration
+│   └── AIProperties
+├── util/              # Utilities
+│   ├── PeriodCalculator
+│   └── DateRange
 └── beans/             # Dependency injection
     └── BeanConfiguration
 ```

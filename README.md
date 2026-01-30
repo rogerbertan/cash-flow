@@ -50,7 +50,9 @@ Cash Flow is an AI-powered RESTful API application designed to help users manage
 Key Features:
 - Category management for organizing transactions (INCOME/EXPENSE)
 - Transaction tracking with full CRUD operations
-- AI-powered category suggestions based on transaction descriptions
+- **AI-powered features** using Google Gemini:
+  - Smart category suggestions based on transaction descriptions
+  - Spending pattern analysis and personalized insights
 - Paginated transaction history
 - Business rule validation (type matching, positive amounts, referential integrity)
 - Database migrations with Flyway
@@ -135,9 +137,9 @@ Follow these steps to get a local copy up and running.
    export DB_PASSWORD=postgres
    ```
 
-5. Configure Gemini API key (required for AI category suggestions)
+5. Configure Google API key (required for AI features)
    ```sh
-   export GEMINI_API_KEY=your_gemini_api_key_here
+   export GOOGLE_API_KEY=your_google_api_key_here
    ```
    Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 
@@ -221,6 +223,10 @@ Flyway migrations run automatically on startup. Migration files are located in `
 - `DELETE /api/transactions/{id}` - Delete transaction
 - `POST /api/transactions/suggest-category` - Get AI-powered category suggestion
 
+### AI Insights
+- `GET /api/ai/insights?period=monthly` - Get AI-powered spending analysis and insights
+  - Supported periods: `monthly` (default), `weekly`, `quarterly`, `yearly`
+
 ### Example Request
 
 Create a category:
@@ -261,8 +267,29 @@ Response:
     "name": "Food & Dining",
     "type": "EXPENSE"
   },
-  "confidence": "HIGH",
-  "message": "Based on the description, this appears to be a food/dining expense."
+  "confidence": "high",
+  "message": "Category suggestion successful"
+}
+```
+
+Get AI spending insights:
+`GET /api/ai/insights?period=monthly`
+
+Response:
+```json
+{
+  "insights": [
+    "Dining expenses increased 30% this month ($450) compared to last month ($346)",
+    "You typically spend 40% more on weekends ($180) than weekdays",
+    "Coffee purchases average 5 times per week at $4.50 per transaction",
+    "Transportation costs are 15% below your 3-month average",
+    "Grocery spending is consistent at $320/month",
+    "Entertainment spending spiked on the 15th with a $120 transaction",
+    "Consider setting a monthly dining budget of $400 based on your average"
+  ],
+  "period": "monthly",
+  "summary": "Overall spending increased 18% this month, primarily driven by dining and entertainment",
+  "generatedAt": "2026-01-29T15:30:00"
 }
 ```
 
