@@ -17,7 +17,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionRepositoryGateway implements TransactionGateway {
@@ -102,6 +108,69 @@ public class TransactionRepositoryGateway implements TransactionGateway {
     @Override
     public List<CategorySummary> getCategorySummaries(int month, int year) {
         return transactionRepository.findCategorySummariesByMonthAndYear(month, year);
+    }
+
+    @Override
+    public List<Transaction> findTransactionsByDateRange(LocalDate startDate, LocalDate endDate) {
+        return transactionRepository.findByDateRange(startDate, endDate)
+                .stream()
+                .map(entityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public Map<DayOfWeek, BigDecimal> getExpensesByDayOfWeek(LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> transactions = transactionRepository.findByDateRange(startDate, endDate);
+
+        Map<DayOfWeek, BigDecimal> expensesByDayOfWeek = new HashMap<>();
+        for (DayOfWeek day : DayOfWeek.values()) {
+            expensesByDayOfWeek.put(day, BigDecimal.ZERO);
+        }
+
+        for (TransactionEntity transaction : transactions) {
+            if (transaction.getType() == Type.EXPENSE) {
+                DayOfWeek dayOfWeek = transaction.getTransactionDate().getDayOfWeek();
+                expensesByDayOfWeek.computeIfPresent(dayOfWeek, (k, currentAmount) -> currentAmount.add(transaction.getAmount()));
+            }
+        }
+
+        return expensesByDayOfWeek;
+    }
+
+    @Override
+    public Map<String, Long> getTransactionCountByCategory(LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> transactions = transactionRepository.findByDateRange(startDate, endDate);
+
+        return transactions.stream()
+                .collect(Collectors.groupingBy(
+                        t -> t.getCategory().getName(),
+                        Collectors.counting()
+                ));
+    }
+
+    @Override
+    public Map<String, BigDecimal> getAverageAmountByCategory(LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> transactions = transactionRepository.findByDateRange(startDate, endDate);
+
+        Map<String, List<BigDecimal>> amountsByCategory = transactions.stream()
+                .collect(Collectors.groupingBy(
+                        t -> t.getCategory().getName(),
+                        Collectors.mapping(TransactionEntity::getAmount, Collectors.toList())
+                ));
+
+        Map<String, BigDecimal> averages = new HashMap<>();
+        for (Map.Entry<String, List<BigDecimal>> entry : amountsByCategory.entrySet()) {
+            BigDecimal sum = entry.getValue().stream()
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal average = sum.divide(
+                    BigDecimal.valueOf(entry.getValue().size()),
+                    2,
+                    RoundingMode.HALF_UP
+            );
+            averages.put(entry.getKey(), average);
+        }
+
+        return averages;
     }
 
     private void validateAmountPositive(BigDecimal amount) {

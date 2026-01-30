@@ -2,6 +2,7 @@ package dev.rogerbertan.cash_flow.domain.usecases;
 
 import dev.rogerbertan.cash_flow.domain.entities.Category;
 import dev.rogerbertan.cash_flow.domain.gateway.CategoryGateway;
+import dev.rogerbertan.cash_flow.domain.usecases.category.DeleteCategoryUseCase;
 import dev.rogerbertan.cash_flow.infra.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

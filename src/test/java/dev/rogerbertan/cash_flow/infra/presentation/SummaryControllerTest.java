@@ -1,6 +1,9 @@
 package dev.rogerbertan.cash_flow.infra.presentation;
 
 import dev.rogerbertan.cash_flow.domain.usecases.*;
+import dev.rogerbertan.cash_flow.domain.usecases.summary.GetBalanceUseCase;
+import dev.rogerbertan.cash_flow.domain.usecases.summary.GetCategoriesSummaryUseCase;
+import dev.rogerbertan.cash_flow.domain.usecases.summary.GetMonthlySummaryUseCase;
 import dev.rogerbertan.cash_flow.domain.valueobjects.Balance;
 import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.cash_flow.domain.valueobjects.MonthlySummary;

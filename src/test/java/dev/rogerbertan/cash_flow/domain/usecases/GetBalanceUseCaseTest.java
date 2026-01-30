@@ -1,6 +1,7 @@
 package dev.rogerbertan.cash_flow.domain.usecases;
 
 import dev.rogerbertan.cash_flow.domain.gateway.TransactionGateway;
+import dev.rogerbertan.cash_flow.domain.usecases.summary.GetBalanceUseCase;
 import dev.rogerbertan.cash_flow.domain.valueobjects.Balance;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

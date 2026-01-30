@@ -1,4 +1,4 @@
-package dev.rogerbertan.cash_flow.domain.usecases;
+package dev.rogerbertan.cash_flow.domain.usecases.summary;
 
 import dev.rogerbertan.cash_flow.domain.gateway.TransactionGateway;
 import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySummary;

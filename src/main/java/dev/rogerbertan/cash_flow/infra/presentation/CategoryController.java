@@ -1,7 +1,7 @@
 package dev.rogerbertan.cash_flow.infra.presentation;
 
 import dev.rogerbertan.cash_flow.domain.entities.Category;
-import dev.rogerbertan.cash_flow.domain.usecases.*;
+import dev.rogerbertan.cash_flow.domain.usecases.category.*;
 import dev.rogerbertan.cash_flow.infra.dto.CategoryCreateRequest;
 import dev.rogerbertan.cash_flow.infra.dto.CategoryResponse;
 import dev.rogerbertan.cash_flow.infra.dto.CategoryUpdateRequest;

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -38,4 +39,11 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     List<CategorySummary> findCategorySummariesByMonthAndYear(
             @Param("month") int month,
             @Param("year") int year);
+
+    @Query("SELECT t FROM TransactionEntity t " +
+            "WHERE t.transactionDate BETWEEN :startDate AND :endDate " +
+            "ORDER BY t.transactionDate DESC")
+    List<TransactionEntity> findByDateRange(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
 }

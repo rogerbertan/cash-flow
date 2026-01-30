@@ -3,6 +3,7 @@ package dev.rogerbertan.cash_flow.domain.usecases;
 import dev.rogerbertan.cash_flow.domain.entities.Category;
 import dev.rogerbertan.cash_flow.domain.enums.Type;
 import dev.rogerbertan.cash_flow.domain.gateway.CategoryGateway;
+import dev.rogerbertan.cash_flow.domain.usecases.category.FindAllCategoriesUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

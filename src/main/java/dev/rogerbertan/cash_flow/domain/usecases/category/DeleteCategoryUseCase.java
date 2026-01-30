@@ -1,4 +1,4 @@
-package dev.rogerbertan.cash_flow.domain.usecases;
+package dev.rogerbertan.cash_flow.domain.usecases.category;
 
 import dev.rogerbertan.cash_flow.domain.gateway.CategoryGateway;
 import dev.rogerbertan.cash_flow.infra.exception.ResourceNotFoundException;

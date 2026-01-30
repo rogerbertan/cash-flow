@@ -4,6 +4,7 @@ import dev.rogerbertan.cash_flow.domain.entities.Category;
 import dev.rogerbertan.cash_flow.domain.entities.Transaction;
 import dev.rogerbertan.cash_flow.domain.enums.Type;
 import dev.rogerbertan.cash_flow.domain.gateway.TransactionGateway;
+import dev.rogerbertan.cash_flow.domain.usecases.transaction.FindTransactionByIdUseCase;
 import dev.rogerbertan.cash_flow.infra.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -4,7 +4,7 @@ import dev.rogerbertan.cash_flow.domain.entities.Category;
 import dev.rogerbertan.cash_flow.domain.entities.Transaction;
 import dev.rogerbertan.cash_flow.domain.enums.Type;
 import dev.rogerbertan.cash_flow.domain.usecases.*;
-import dev.rogerbertan.cash_flow.domain.usecases.transaction.SuggestTransactionCategoryUseCase;
+import dev.rogerbertan.cash_flow.domain.usecases.transaction.*;
 import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySuggestion;
 import dev.rogerbertan.cash_flow.infra.dto.CategorySuggestionRequest;
 import dev.rogerbertan.cash_flow.infra.dto.CategorySuggestionResponse;
