@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getHttpStatus()).body(errorResponse);
     }
 
+    @ExceptionHandler(AIInsightsException.class)
+    public ResponseEntity<ErrorResponse> handleAIInsightsException(
+            AIInsightsException ex) {
+
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+        return ResponseEntity.status(ex.getHttpStatus()).body(errorResponse);
+    }
+
     @ExceptionHandler(BudgetPlannerException.class)
     public ResponseEntity<ErrorResponse> handleBudgetPlannerException(
             BudgetPlannerException ex) {

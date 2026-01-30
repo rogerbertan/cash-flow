@@ -1,9 +1,11 @@
 package dev.rogerbertan.cash_flow.infra.beans;
 
 import dev.rogerbertan.cash_flow.domain.gateway.AICategorizerGateway;
+import dev.rogerbertan.cash_flow.domain.gateway.AIInsightsGateway;
 import dev.rogerbertan.cash_flow.domain.gateway.CategoryGateway;
 import dev.rogerbertan.cash_flow.domain.gateway.TransactionGateway;
 import dev.rogerbertan.cash_flow.domain.usecases.category.*;
+import dev.rogerbertan.cash_flow.domain.usecases.insights.GenerateSpendingInsightsUseCase;
 import dev.rogerbertan.cash_flow.domain.usecases.summary.GetBalanceUseCase;
 import dev.rogerbertan.cash_flow.domain.usecases.summary.GetCategoriesSummaryUseCase;
 import dev.rogerbertan.cash_flow.domain.usecases.summary.GetMonthlySummaryUseCase;
@@ -11,6 +13,7 @@ import dev.rogerbertan.cash_flow.domain.usecases.transaction.*;
 import dev.rogerbertan.cash_flow.infra.config.AIProperties;
 import dev.rogerbertan.cash_flow.infra.gateway.CategoryRepositoryGateway;
 import dev.rogerbertan.cash_flow.infra.gateway.GeminiCategorizerGateway;
+import dev.rogerbertan.cash_flow.infra.gateway.GeminiInsightsGateway;
 import dev.rogerbertan.cash_flow.infra.gateway.TransactionRepositoryGateway;
 import dev.rogerbertan.cash_flow.infra.mapper.CategoryEntityMapper;
 import dev.rogerbertan.cash_flow.infra.mapper.TransactionEntityMapper;
@@ -118,5 +121,18 @@ public class BeanConfiguration {
             CategoryGateway categoryGateway
     ) {
         return new SuggestTransactionCategoryUseCase(aiCategorizerGateway, categoryGateway);
+    }
+
+    @Bean
+    public AIInsightsGateway aiInsightsGateway(AIProperties aiProperties) {
+        return new GeminiInsightsGateway(aiProperties);
+    }
+
+    @Bean
+    public GenerateSpendingInsightsUseCase generateSpendingInsightsUseCase(
+            AIInsightsGateway aiInsightsGateway,
+            TransactionGateway transactionGateway
+    ) {
+        return new GenerateSpendingInsightsUseCase(aiInsightsGateway, transactionGateway);
     }
 }
