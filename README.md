@@ -3,16 +3,16 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">Budget Planner Clean Architecture</h3>
+  <h3 align="center">Cash Flow</h3>
 
   <p align="center">
-    A Spring Boot application implementing Clean Architecture principles for personal budget management
+    A AI-powered Spring Boot application implementing Clean Architecture principles for daily income and expense transaction tracker
     <br />
     <a href="#about-the-project">Explore the docs</a>
     &middot;
-    <a href="https://github.com/rogerbertan/budget-planner-clean-arch/issues/new?labels=bug">Report Bug</a>
+    <a href="https://github.com/rogerbertan/cash-flow/issues/new?labels=bug">Report Bug</a>
     &middot;
-    <a href="https://github.com/rogerbertan/budget-planner-clean-arch/issues/new?labels=enhancement">Request Feature</a>
+    <a href="https://github.com/rogerbertan/cash-flow/issues/new?labels=enhancement">Request Feature</a>
   </p>
 </div>
 
@@ -45,7 +45,7 @@
 
 ## About The Project
 
-Budget Planner is a RESTful API application designed to help users manage their personal finances by tracking income and expenses. The project serves as a practical implementation of Clean Architecture principles using modern Java and Spring Boot.
+Cash Flow is an AI-powered RESTful API application designed to help users manage their personal finances by tracking income and expenses. The project serves as a practical implementation of Clean Architecture principles using modern Java and Spring Boot.
 
 Key Features:
 - Category management for organizing transactions (INCOME/EXPENSE)
@@ -114,23 +114,23 @@ Follow these steps to get a local copy up and running.
 
 1. Clone the repository
    ```sh
-   git clone https://github.com/rogerbertan/budget-planner-clean-arch.git
+   git clone https://github.com/rogerbertan/cash-flow.git
    ```
 
 2. Navigate to the project directory
    ```sh
-   cd budget-planner-clean-arch
+   cd cash-flow
    ```
 
 3. Create a PostgreSQL database
    ```sh
-   createdb budget_planner_clean_arch
+   createdb cash_flow
    ```
 
 4. Configure database connection (optional - defaults to localhost)
    ```sh
    export DB_HOST=localhost
-   export DB_NAME=budget_planner_clean_arch
+   export DB_NAME=cash_flow
    export DB_USER=postgres
    export DB_PASSWORD=postgres
    ```
@@ -153,7 +153,7 @@ Follow these steps to get a local copy up and running.
 
    Or with custom database configuration:
    ```sh
-   DB_HOST=localhost DB_NAME=budget_planner_clean_arch DB_USER=postgres DB_PASSWORD=postgres ./mvnw spring-boot:run
+   DB_HOST=localhost DB_NAME=cash_flow DB_USER=postgres DB_PASSWORD=postgres ./mvnw spring-boot:run
    ```
 
 The application will start on `http://localhost:8080`
