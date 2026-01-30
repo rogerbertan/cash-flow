@@ -3,7 +3,6 @@ package dev.rogerbertan.cash_flow.infra.gateway;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import dev.rogerbertan.cash_flow.domain.gateway.AIInsightsGateway;
-import dev.rogerbertan.cash_flow.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.cash_flow.domain.valueobjects.SpendingInsights;
 import dev.rogerbertan.cash_flow.domain.valueobjects.TransactionAnalysisData;
 import dev.rogerbertan.cash_flow.infra.config.AIProperties;
@@ -14,8 +13,6 @@ import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GeminiInsightsGateway implements AIInsightsGateway {
 
@@ -184,8 +181,8 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
         }
 
         String firstInsight = insights.get(0);
-        if (firstInsight.length() > 100) {
-            return firstInsight.substring(0, 97) + "...";
+        if (firstInsight.length() > 300) {
+            return firstInsight.substring(0, 297) + "...";
         }
 
         return firstInsight;
