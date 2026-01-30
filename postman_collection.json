@@ -1,9 +1,9 @@
 {
   "info": {
-    "name": "Budget Planner Clean Architecture API",
-    "description": "Complete API collection for Budget Planner application implementing Clean Architecture with Spring Boot 4.0.2",
+    "name": "Cash Flow - Clean Architecture API",
+    "description": "Complete API collection for Cash Flow application implementing Clean Architecture with Spring Boot 4.0.2. Features AI-powered category suggestions and spending insights using Google Gemini.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "budget-planner-api"
+    "_exporter_id": "cash-flow-api"
   },
   "variable": [
     {
@@ -478,6 +478,155 @@
         }
       ],
       "description": "Summary and reporting endpoints for financial analysis"
+    },
+    {
+      "name": "AI Insights",
+      "item": [
+        {
+          "name": "Get Spending Insights - Monthly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/insights?period=monthly",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "insights"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly",
+                  "description": "Analysis period: monthly (default), weekly, quarterly, yearly"
+                }
+              ]
+            },
+            "description": "Get AI-powered spending pattern analysis and personalized insights. Analyzes transaction data for the specified period and provides insights on spending trends, patterns, anomalies, and recommendations. Requires at least 3 transactions in the period."
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/ai/insights?period=monthly",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "ai",
+                    "insights"
+                  ],
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "monthly"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"insights\": [\n    \"Dining expenses increased 30% this month ($450) compared to last month ($346)\",\n    \"You typically spend 40% more on weekends ($180) than weekdays\",\n    \"Coffee purchases average 5 times per week at $4.50 per transaction\",\n    \"Transportation costs are 15% below your 3-month average\",\n    \"Grocery spending is consistent at $320/month\",\n    \"Entertainment spending spiked on the 15th with a $120 transaction\",\n    \"Consider setting a monthly dining budget of $400 based on your average\"\n  ],\n  \"period\": \"monthly\",\n  \"summary\": \"Overall spending increased 18% this month, primarily driven by dining and entertainment\",\n  \"generatedAt\": \"2026-01-29T15:30:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Spending Insights - Weekly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/insights?period=weekly",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "insights"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "weekly",
+                  "description": "Weekly analysis period"
+                }
+              ]
+            },
+            "description": "Get AI-powered spending insights for the current week"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Spending Insights - Quarterly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/insights?period=quarterly",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "insights"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "quarterly",
+                  "description": "Quarterly analysis period"
+                }
+              ]
+            },
+            "description": "Get AI-powered spending insights for the current quarter"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Spending Insights - Yearly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/insights?period=yearly",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "insights"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "yearly",
+                  "description": "Yearly analysis period"
+                }
+              ]
+            },
+            "description": "Get AI-powered spending insights for the current year"
+          },
+          "response": []
+        }
+      ],
+      "description": "AI-powered analytics endpoints for spending pattern analysis and personalized financial insights using Google Gemini"
     }
   ]
 }
