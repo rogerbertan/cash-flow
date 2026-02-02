@@ -199,6 +199,33 @@ Build with tests:
 
 Flyway migrations run automatically on startup. Migration files are located in `src/main/resources/db/migration/`
 
+### Code Quality
+
+The project enforces code quality and consistent formatting using **Checkstyle** and **Spotless**.
+
+Check code style violations:
+```sh
+./mvnw checkstyle:check
+```
+
+Auto-fix code formatting:
+```sh
+./mvnw spotless:apply
+```
+
+Generate Checkstyle HTML report:
+```sh
+./mvnw checkstyle:checkstyle
+xdg-open target/site/checkstyle.html
+```
+
+**Code Style Standards:**
+- Google Java Format (AOSP style, 4-space indentation)
+- Max line length: 120 characters
+- No star imports
+- Max 10 parameters per method
+- Checkstyle runs automatically during build validation phase
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- API ENDPOINTS -->
@@ -303,6 +330,12 @@ Contributions are what make the open source community such an amazing place to l
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 
+**Before submitting code:**
+- Run `./mvnw spotless:apply` to format your code
+- Ensure `./mvnw checkstyle:check` passes without violations
+- Run `./mvnw test` to verify all tests pass
+
+**Contribution Steps:**
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
