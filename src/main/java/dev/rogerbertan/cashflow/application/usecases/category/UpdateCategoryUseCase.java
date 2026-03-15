@@ -1,7 +1,7 @@
 package dev.rogerbertan.cashflow.application.usecases.category;
 
-import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
 import java.time.LocalDateTime;
 

@@ -9,15 +9,7 @@
 │                                                             │
 │  ┌───────────────────────────────────────────────────────┐ │
 │  │                                                       │ │
-│  │                   DOMAIN LAYER                        │ │
-│  │                                                       │ │
-│  │   ┌───────────────────────────────────────────┐     │ │
-│  │   │         Entities & Business Rules         │     │ │
-│  │   │                                           │     │ │
-│  │   │  • Category (record)                      │     │ │
-│  │   │  • Transaction (record)                   │     │ │
-│  │   │  • Type (enum)                            │     │ │
-│  │   └───────────────────────────────────────────┘     │ │
+│  │                  APPLICATION LAYER                    │ │
 │  │                                                       │ │
 │  │   ┌───────────────────────────────────────────┐     │ │
 │  │   │             Use Cases                     │     │ │
@@ -26,6 +18,8 @@
 │  │   │  • FindAllCategoriesUseCase               │     │ │
 │  │   │  • CreateTransactionUseCase               │     │ │
 │  │   │  • FindAllTransactionsUseCase             │     │ │
+│  │   │  • GetBalanceUseCase                      │     │ │
+│  │   │  • GetMonthlySummaryUseCase               │     │ │
 │  │   │  • SuggestTransactionCategoryUseCase      │     │ │
 │  │   │  • GenerateSpendingInsightsUseCase        │     │ │
 │  │   └───────────────────────────────────────────┘     │ │
@@ -39,6 +33,15 @@
 │  │   │  • AIInsightsGateway                      │     │ │
 │  │   └───────────────────────────────────────────┘     │ │
 │  │                                                       │ │
+│  │   ┌───────────────────────────────────────────┐     │ │
+│  │   │         DOMAIN LAYER                      │     │ │
+│  │   │                                           │     │ │
+│  │   │  • Category (record)                      │     │ │
+│  │   │  • Transaction (record)                   │     │ │
+│  │   │  • Type (enum)                            │     │ │
+│  │   │  • Balance, MonthlySummary (value objects)│     │ │
+│  │   └───────────────────────────────────────────┘     │ │
+│  │                                                       │ │
 │  └───────────────────────────────────────────────────────┘ │
 │                                                             │
 │  Controllers │ DTOs │ Mappers │ Gateway Impl │ JPA Repos   │
@@ -46,7 +49,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Core Principle**: Dependencies point inward. The domain layer has **zero external dependencies**.
+**Core Principle**: Dependencies point inward. The domain layer has **zero external dependencies**. The application layer depends only on the domain.
 
 ## Layer Structure
 
@@ -58,38 +61,43 @@ domain/
 │   └── Transaction
 ├── enums/             # Business enumerations
 │   └── Type
-├── usecases/          # Business operations
-│   ├── category/
-│   │   ├── CreateCategoryUseCase
-│   │   ├── FindAllCategoriesUseCase
-│   │   ├── FindCategoryByIdUseCase
-│   │   ├── UpdateCategoryUseCase
-│   │   └── DeleteCategoryUseCase
-│   ├── transaction/
-│   │   ├── CreateTransactionUseCase
-│   │   ├── FindAllTransactionsUseCase
-│   │   ├── FindTransactionByIdUseCase
-│   │   ├── UpdateTransactionUseCase
-│   │   ├── DeleteTransactionUseCase
-│   │   └── SuggestTransactionCategoryUseCase
-│   ├── summary/
-│   │   ├── GetBalanceUseCase
-│   │   ├── GetMonthlySummaryUseCase
-│   │   └── GetCategoriesSummaryUseCase
-│   └── insights/
-│       └── GenerateSpendingInsightsUseCase
+└── valueobjects/      # Immutable data structures
+    ├── Balance
+    ├── CategorySuggestion
+    ├── CategorySummary
+    ├── MonthlySummary
+    ├── SpendingInsights
+    └── TransactionAnalysisData
+```
+
+### Application Layer
+```
+application/
 ├── gateway/           # Persistence & service contracts (interfaces)
 │   ├── CategoryGateway
 │   ├── TransactionGateway
 │   ├── AICategorizerGateway
 │   └── AIInsightsGateway
-└── valueobjects/      # Immutable data structures
-    ├── CategorySuggestion
-    ├── SpendingInsights
-    ├── TransactionAnalysisData
-    ├── MonthlySummary
-    ├── Balance
-    └── CategorySummary
+└── usecases/          # Business operations
+    ├── category/
+    │   ├── CreateCategoryUseCase
+    │   ├── FindAllCategoriesUseCase
+    │   ├── FindCategoryByIdUseCase
+    │   ├── UpdateCategoryUseCase
+    │   └── DeleteCategoryUseCase
+    ├── transaction/
+    │   ├── CreateTransactionUseCase
+    │   ├── FindAllTransactionUseCase
+    │   ├── FindTransactionByIdUseCase
+    │   ├── UpdateTransactionUseCase
+    │   ├── DeleteTransactionUseCase
+    │   └── SuggestTransactionCategoryUseCase
+    ├── summary/
+    │   ├── GetBalanceUseCase
+    │   ├── GetMonthlySummaryUseCase
+    │   └── GetCategoriesSummaryUseCase
+    └── insights/
+        └── GenerateSpendingInsightsUseCase
 ```
 
 ### Infrastructure Layer
@@ -102,23 +110,34 @@ infra/
 │   ├── AIInsightsController
 │   └── HealthController
 ├── dto/               # API Request/Response objects
+│   ├── BalanceResponse
+│   ├── CategoriesSummaryResponse
 │   ├── CategoryCreateRequest
 │   ├── CategoryResponse
 │   ├── CategorySuggestionRequest
 │   ├── CategorySuggestionResponse
+│   ├── CategoryUpdateRequest
+│   ├── ErrorResponse
+│   ├── MonthlySummaryResponse
 │   ├── SpendingInsightsRequest
 │   ├── SpendingInsightsResponse
 │   ├── TransactionCreateRequest
-│   └── TransactionResponse
+│   ├── TransactionResponse
+│   └── TransactionUpdateRequest
 ├── mapper/            # Object conversions
+│   ├── BalanceResponseMapper
 │   ├── CategoryCreateMapper
-│   ├── CategoryUpdateRequestMapper
+│   ├── CategoryEntityMapper
 │   ├── CategoryResponseMapper
 │   ├── CategorySuggestionMapper
+│   ├── CategorySummaryResponseMapper
+│   ├── CategoryUpdateRequestMapper
+│   ├── MonthlySummaryResponseMapper
 │   ├── SpendingInsightsMapper
 │   ├── TransactionCreateMapper
-│   ├── TransactionUpdateRequestMapper
-│   └── TransactionResponseMapper
+│   ├── TransactionEntityMapper
+│   ├── TransactionResponseMapper
+│   └── TransactionUpdateRequestMapper
 ├── gateway/           # Gateway implementations
 │   ├── CategoryRepositoryGateway
 │   ├── TransactionRepositoryGateway
@@ -126,14 +145,13 @@ infra/
 │   └── GeminiInsightsGateway
 ├── persistence/       # JPA entities & repositories
 │   ├── CategoryEntity
-│   ├── CategoryJpaRepository
+│   ├── CategoryRepository
 │   ├── TransactionEntity
-│   └── TransactionJpaRepository
+│   └── TransactionRepository
 ├── exception/         # Exception handling
-│   ├── BudgetPlannerException
+│   ├── BudgetPlannerException (abstract)
 │   ├── ResourceNotFoundException
 │   ├── InvalidTransactionException
-│   ├── CategoryInUseException
 │   ├── AICategorizeException
 │   ├── AIInsightsException
 │   └── GlobalExceptionHandler
@@ -176,7 +194,7 @@ infra/
 ### Example: Creating a Transaction
 
 ```
-     HTTP REQUEST                    DOMAIN                    INFRASTRUCTURE
+     HTTP REQUEST                    APPLICATION               INFRASTRUCTURE
 
          │
          │  POST /api/transactions
@@ -274,7 +292,7 @@ public class CreateCategoryUseCase {
 
 ```
 ┌─────────────────────┐
-│  CategoryGateway    │  ◀─── Domain interface
+│  CategoryGateway    │  ◀─── Application interface
 │  (interface)        │
 │                     │
 │  + create()         │
@@ -341,23 +359,28 @@ Request DTO ─────▶ Create Mapper ─────▶ Domain Entity
 
 ## Key Architectural Decisions
 
-### 1. Use Cases Without Interfaces
+### 1. Explicit Application Layer
+- Use cases and gateway interfaces live in `application/`, separate from `domain/`
+- Domain remains pure: entities, enums, and value objects only
+- Clear boundary between business logic orchestration and core business rules
+
+### 2. Use Cases Without Interfaces
 - Simplified from interface + implementation pattern
 - Concrete classes are sufficient for single responsibility operations
 - Reduces boilerplate and complexity
 
-### 2. Gateway Pattern for Persistence
-- Domain defines contracts via interfaces
+### 3. Gateway Pattern for Persistence
+- Application layer defines contracts via interfaces
 - Infrastructure provides implementations
 - Enables testing with mocks
 - Allows swapping persistence strategies
 
-### 3. Validation in Gateway Implementations
+### 4. Validation in Gateway Implementations
 - Business rules enforced at gateway level
 - Use cases remain simple and focused
 - Single point of business logic enforcement
 
-### 4. Immutable Entities
-- Java records for entities and DTOs
+### 5. Immutable Entities
+- Java records for entities, value objects, and DTOs
 - Prevents accidental state mutation
 - Thread-safe by design

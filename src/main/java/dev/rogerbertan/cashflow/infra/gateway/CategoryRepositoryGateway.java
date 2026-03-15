@@ -1,7 +1,7 @@
 package dev.rogerbertan.cashflow.infra.gateway;
 
-import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.infra.mapper.CategoryEntityMapper;
 import dev.rogerbertan.cashflow.infra.persistence.CategoryEntity;
 import dev.rogerbertan.cashflow.infra.persistence.CategoryRepository;

@@ -1,7 +1,7 @@
 package dev.rogerbertan.cashflow.application.usecases.transaction;
 
-import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
+import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

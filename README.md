@@ -75,9 +75,12 @@ This application follows **Clean Architecture** principles with clear separation
 
 **Domain Layer** (`domain/`):
 - Immutable entities (Category, Transaction)
-- Use case classes with single responsibility
-- Gateway interfaces for persistence abstraction
+- Value objects (Balance, MonthlySummary, SpendingInsights, etc.)
 - Zero external dependencies
+
+**Application Layer** (`application/`):
+- Use case classes with single responsibility
+- Gateway interfaces for persistence and AI service abstraction
 
 **Infrastructure Layer** (`infra/`):
 - REST controllers for HTTP endpoints
@@ -88,7 +91,7 @@ This application follows **Clean Architecture** principles with clear separation
 
 **Key Patterns:**
 - Use Cases: Simple classes with `execute()` method
-- Gateway Pattern: Domain interfaces, infrastructure implementations
+- Gateway Pattern: Application interfaces, infrastructure implementations
 - Mapper Pattern: Separate mappers for create, update, and response operations
 - DTO Pattern: Immutable Java records
 

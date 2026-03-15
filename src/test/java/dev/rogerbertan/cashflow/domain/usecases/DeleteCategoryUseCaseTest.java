@@ -3,9 +3,9 @@ package dev.rogerbertan.cashflow.domain.usecases;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
 import dev.rogerbertan.cashflow.application.usecases.category.DeleteCategoryUseCase;
+import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

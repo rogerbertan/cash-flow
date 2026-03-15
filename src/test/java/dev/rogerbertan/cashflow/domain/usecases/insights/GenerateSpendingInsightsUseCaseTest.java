@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import dev.rogerbertan.cashflow.application.gateway.AIInsightsGateway;
+import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
 import dev.rogerbertan.cashflow.application.usecases.insights.GenerateSpendingInsightsUseCase;
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.application.gateway.AIInsightsGateway;
-import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
 import dev.rogerbertan.cashflow.domain.valueobjects.SpendingInsights;
 import dev.rogerbertan.cashflow.domain.valueobjects.TransactionAnalysisData;
 import java.math.BigDecimal;

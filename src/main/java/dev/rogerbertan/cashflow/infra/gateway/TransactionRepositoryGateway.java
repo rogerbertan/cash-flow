@@ -1,8 +1,8 @@
 package dev.rogerbertan.cashflow.infra.gateway;
 
+import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.cashflow.infra.exception.InvalidTransactionException;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;

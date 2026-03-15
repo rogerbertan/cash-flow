@@ -2,10 +2,10 @@ package dev.rogerbertan.cashflow.infra.gateway;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
-import dev.rogerbertan.cashflow.domain.entities.Category;
-import dev.rogerbertan.cashflow.domain.enums.Type;
 import dev.rogerbertan.cashflow.application.gateway.AICategorizerGateway;
 import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.domain.entities.Category;
+import dev.rogerbertan.cashflow.domain.enums.Type;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySuggestion;
 import dev.rogerbertan.cashflow.infra.config.AIProperties;
 import dev.rogerbertan.cashflow.infra.exception.AICategorizeException;

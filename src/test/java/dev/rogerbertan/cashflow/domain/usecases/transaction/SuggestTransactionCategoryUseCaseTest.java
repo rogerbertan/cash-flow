@@ -3,10 +3,10 @@ package dev.rogerbertan.cashflow.domain.usecases.transaction;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import dev.rogerbertan.cashflow.application.usecases.transaction.SuggestTransactionCategoryUseCase;
-import dev.rogerbertan.cashflow.domain.enums.Type;
 import dev.rogerbertan.cashflow.application.gateway.AICategorizerGateway;
 import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.application.usecases.transaction.SuggestTransactionCategoryUseCase;
+import dev.rogerbertan.cashflow.domain.enums.Type;
 import dev.rogerbertan.cashflow.domain.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySuggestion;
 import org.junit.jupiter.api.Test;
