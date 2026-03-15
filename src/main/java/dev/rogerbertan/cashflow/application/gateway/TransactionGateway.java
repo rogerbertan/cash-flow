@@ -1,4 +1,4 @@
-package dev.rogerbertan.cashflow.domain.gateway;
+package dev.rogerbertan.cashflow.application.gateway;
 
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySummary;

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
 import dev.rogerbertan.cashflow.domain.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySuggestion;
 import dev.rogerbertan.cashflow.infra.config.AIProperties;

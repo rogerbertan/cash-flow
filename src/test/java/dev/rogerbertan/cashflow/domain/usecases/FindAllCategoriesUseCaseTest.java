@@ -5,8 +5,8 @@ import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.gateway.CategoryGateway;
-import dev.rogerbertan.cashflow.domain.usecases.category.FindAllCategoriesUseCase;
+import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.application.usecases.category.FindAllCategoriesUseCase;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;

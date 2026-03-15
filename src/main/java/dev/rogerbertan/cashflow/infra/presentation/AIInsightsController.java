@@ -1,6 +1,6 @@
 package dev.rogerbertan.cashflow.infra.presentation;
 
-import dev.rogerbertan.cashflow.domain.usecases.insights.GenerateSpendingInsightsUseCase;
+import dev.rogerbertan.cashflow.application.usecases.insights.GenerateSpendingInsightsUseCase;
 import dev.rogerbertan.cashflow.domain.valueobjects.SpendingInsights;
 import dev.rogerbertan.cashflow.infra.dto.SpendingInsightsResponse;
 import dev.rogerbertan.cashflow.infra.mapper.SpendingInsightsMapper;

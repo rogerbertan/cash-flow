@@ -3,8 +3,8 @@ package dev.rogerbertan.cashflow.domain.usecases;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import dev.rogerbertan.cashflow.domain.gateway.TransactionGateway;
-import dev.rogerbertan.cashflow.domain.usecases.summary.GetBalanceUseCase;
+import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
+import dev.rogerbertan.cashflow.application.usecases.summary.GetBalanceUseCase;
 import dev.rogerbertan.cashflow.domain.valueobjects.Balance;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import dev.rogerbertan.cashflow.domain.usecases.insights.GenerateSpendingInsightsUseCase;
+import dev.rogerbertan.cashflow.application.usecases.insights.GenerateSpendingInsightsUseCase;
 import dev.rogerbertan.cashflow.domain.valueobjects.SpendingInsights;
 import dev.rogerbertan.cashflow.infra.dto.SpendingInsightsResponse;
 import dev.rogerbertan.cashflow.infra.mapper.SpendingInsightsMapper;

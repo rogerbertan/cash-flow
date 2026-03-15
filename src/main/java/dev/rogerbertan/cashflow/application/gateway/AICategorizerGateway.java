@@ -1,4 +1,4 @@
-package dev.rogerbertan.cashflow.domain.gateway;
+package dev.rogerbertan.cashflow.application.gateway;
 
 import dev.rogerbertan.cashflow.domain.enums.Type;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySuggestion;

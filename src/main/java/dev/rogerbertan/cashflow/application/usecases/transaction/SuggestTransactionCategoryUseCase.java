@@ -1,8 +1,8 @@
-package dev.rogerbertan.cashflow.domain.usecases.transaction;
+package dev.rogerbertan.cashflow.application.usecases.transaction;
 
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.gateway.AICategorizerGateway;
-import dev.rogerbertan.cashflow.domain.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.application.gateway.AICategorizerGateway;
+import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySuggestion;
 
 public class SuggestTransactionCategoryUseCase {

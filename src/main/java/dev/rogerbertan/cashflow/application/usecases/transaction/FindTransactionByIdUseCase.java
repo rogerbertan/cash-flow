@@ -1,7 +1,7 @@
-package dev.rogerbertan.cashflow.domain.usecases.transaction;
+package dev.rogerbertan.cashflow.application.usecases.transaction;
 
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
-import dev.rogerbertan.cashflow.domain.gateway.TransactionGateway;
+import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
 
 public class FindTransactionByIdUseCase {

@@ -2,7 +2,7 @@ package dev.rogerbertan.cashflow.infra.gateway;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
-import dev.rogerbertan.cashflow.domain.gateway.AIInsightsGateway;
+import dev.rogerbertan.cashflow.application.gateway.AIInsightsGateway;
 import dev.rogerbertan.cashflow.domain.valueobjects.SpendingInsights;
 import dev.rogerbertan.cashflow.domain.valueobjects.TransactionAnalysisData;
 import dev.rogerbertan.cashflow.infra.config.AIProperties;

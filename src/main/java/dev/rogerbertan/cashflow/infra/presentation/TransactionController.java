@@ -1,12 +1,12 @@
 package dev.rogerbertan.cashflow.infra.presentation;
 
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
-import dev.rogerbertan.cashflow.domain.usecases.transaction.CreateTransactionUseCase;
-import dev.rogerbertan.cashflow.domain.usecases.transaction.DeleteTransactionUseCase;
-import dev.rogerbertan.cashflow.domain.usecases.transaction.FindAllTransactionUseCase;
-import dev.rogerbertan.cashflow.domain.usecases.transaction.FindTransactionByIdUseCase;
-import dev.rogerbertan.cashflow.domain.usecases.transaction.SuggestTransactionCategoryUseCase;
-import dev.rogerbertan.cashflow.domain.usecases.transaction.UpdateTransactionUseCase;
+import dev.rogerbertan.cashflow.application.usecases.transaction.CreateTransactionUseCase;
+import dev.rogerbertan.cashflow.application.usecases.transaction.DeleteTransactionUseCase;
+import dev.rogerbertan.cashflow.application.usecases.transaction.FindAllTransactionUseCase;
+import dev.rogerbertan.cashflow.application.usecases.transaction.FindTransactionByIdUseCase;
+import dev.rogerbertan.cashflow.application.usecases.transaction.SuggestTransactionCategoryUseCase;
+import dev.rogerbertan.cashflow.application.usecases.transaction.UpdateTransactionUseCase;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySuggestion;
 import dev.rogerbertan.cashflow.infra.dto.CategorySuggestionRequest;
 import dev.rogerbertan.cashflow.infra.dto.CategorySuggestionResponse;

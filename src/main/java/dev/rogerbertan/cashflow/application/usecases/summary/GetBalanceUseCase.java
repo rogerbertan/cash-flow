@@ -1,6 +1,6 @@
-package dev.rogerbertan.cashflow.domain.usecases.summary;
+package dev.rogerbertan.cashflow.application.usecases.summary;
 
-import dev.rogerbertan.cashflow.domain.gateway.TransactionGateway;
+import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
 import dev.rogerbertan.cashflow.domain.valueobjects.Balance;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,6 +1,6 @@
-package dev.rogerbertan.cashflow.domain.usecases.category;
+package dev.rogerbertan.cashflow.application.usecases.category;
 
-import dev.rogerbertan.cashflow.domain.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
 
 public class DeleteCategoryUseCase {

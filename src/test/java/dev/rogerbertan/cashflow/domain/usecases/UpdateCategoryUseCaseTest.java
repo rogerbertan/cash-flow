@@ -7,8 +7,8 @@ import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.gateway.CategoryGateway;
-import dev.rogerbertan.cashflow.domain.usecases.category.UpdateCategoryUseCase;
+import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
+import dev.rogerbertan.cashflow.application.usecases.category.UpdateCategoryUseCase;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
