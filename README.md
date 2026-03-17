@@ -45,7 +45,7 @@
 
 ## About The Project
 
-Cash Flow is an AI-powered RESTful API application designed to help users manage their personal finances by tracking income and expenses. The project serves as a practical implementation of Clean Architecture principles using modern Java and Spring Boot.
+Cash Flow is a RESTful API for personal finance management, built with Java 21 and Spring Boot 3. AI is at the core of the experience, driving insights, categorization, and financial recommendations based on the user's income and expense history. The project is structured around Clean Architecture, separating domain logic from infrastructure concerns across well-defined layers.
 
 Key Features:
 - Category management for organizing transactions (INCOME/EXPENSE)
