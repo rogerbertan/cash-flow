@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.within;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import dev.rogerbertan.cashflow.application.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.infra.mapper.CategoryEntityMapper;
 import dev.rogerbertan.cashflow.infra.persistence.CategoryEntity;
 import dev.rogerbertan.cashflow.infra.persistence.CategoryRepository;

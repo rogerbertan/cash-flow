@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import dev.rogerbertan.cashflow.application.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.cashflow.infra.exception.InvalidTransactionException;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
@@ -18,9 +18,12 @@ import dev.rogerbertan.cashflow.infra.persistence.CategoryRepository;
 import dev.rogerbertan.cashflow.infra.persistence.TransactionEntity;
 import dev.rogerbertan.cashflow.infra.persistence.TransactionRepository;
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -706,5 +709,168 @@ class TransactionRepositoryGatewayTest {
                 .findCategorySummariesByMonthAndYear(monthCaptor.capture(), yearCaptor.capture());
         assertThat(monthCaptor.getValue()).isEqualTo(11);
         assertThat(yearCaptor.getValue()).isEqualTo(2025);
+    }
+
+    // findTransactionsByDateRange tests
+
+    @Test
+    void findTransactionsByDateRange_ShouldReturnMappedTransactions_WhenTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        TransactionEntity entity = TestDataFactory.createIncomeTransactionEntity();
+        Transaction transaction = TestDataFactory.createIncomeTransaction();
+
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(List.of(entity));
+        when(entityMapper.toDomain(entity)).thenReturn(transaction);
+
+        // Act
+        List<Transaction> result = gateway.findTransactionsByDateRange(start, end);
+
+        // Assert
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst()).isEqualTo(transaction);
+        verify(transactionRepository).findByDateRange(start, end);
+    }
+
+    @Test
+    void findTransactionsByDateRange_ShouldReturnEmptyList_WhenNoTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(Collections.emptyList());
+
+        // Act
+        List<Transaction> result = gateway.findTransactionsByDateRange(start, end);
+
+        // Assert
+        assertThat(result).isEmpty();
+    }
+
+    // getExpensesByDayOfWeek tests
+
+    @Test
+    void getExpensesByDayOfWeek_ShouldReturnZeroForAllDays_WhenNoTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(Collections.emptyList());
+
+        // Act
+        Map<DayOfWeek, BigDecimal> result = gateway.getExpensesByDayOfWeek(start, end);
+
+        // Assert
+        assertThat(result).hasSize(7);
+        result.values().forEach(amount -> assertThat(amount).isEqualByComparingTo(BigDecimal.ZERO));
+    }
+
+    @Test
+    void getExpensesByDayOfWeek_ShouldAggregateExpensesByDayOfWeek_WhenExpenseTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        TransactionEntity expenseEntity = TestDataFactory.createExpenseTransactionEntity();
+
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(List.of(expenseEntity));
+
+        // Act
+        Map<DayOfWeek, BigDecimal> result = gateway.getExpensesByDayOfWeek(start, end);
+
+        // Assert
+        assertThat(result).hasSize(7);
+        DayOfWeek transactionDay = expenseEntity.getTransactionDate().getDayOfWeek();
+        assertThat(result.get(transactionDay)).isEqualByComparingTo(expenseEntity.getAmount());
+    }
+
+    @Test
+    void getExpensesByDayOfWeek_ShouldIgnoreIncomeTransactions_WhenMixedTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        TransactionEntity incomeEntity = TestDataFactory.createIncomeTransactionEntity();
+
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(List.of(incomeEntity));
+
+        // Act
+        Map<DayOfWeek, BigDecimal> result = gateway.getExpensesByDayOfWeek(start, end);
+
+        // Assert
+        result.values().forEach(amount -> assertThat(amount).isEqualByComparingTo(BigDecimal.ZERO));
+    }
+
+    // getTransactionCountByCategory tests
+
+    @Test
+    void getTransactionCountByCategory_ShouldReturnCountPerCategory_WhenTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        TransactionEntity entity1 = TestDataFactory.createExpenseTransactionEntity();
+        TransactionEntity entity2 = TestDataFactory.createExpenseTransactionEntity();
+
+        when(transactionRepository.findByDateRange(start, end))
+                .thenReturn(List.of(entity1, entity2));
+
+        // Act
+        Map<String, Long> result = gateway.getTransactionCountByCategory(start, end);
+
+        // Assert
+        assertThat(result).containsKey(entity1.getCategory().getName());
+        assertThat(result.get(entity1.getCategory().getName())).isEqualTo(2L);
+    }
+
+    @Test
+    void getTransactionCountByCategory_ShouldReturnEmptyMap_WhenNoTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(Collections.emptyList());
+
+        // Act
+        Map<String, Long> result = gateway.getTransactionCountByCategory(start, end);
+
+        // Assert
+        assertThat(result).isEmpty();
+    }
+
+    // getAverageAmountByCategory tests
+
+    @Test
+    void getAverageAmountByCategory_ShouldReturnAveragePerCategory_WhenTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        CategoryEntity expenseCategory = TestDataFactory.createExpenseCategoryEntity();
+        TransactionEntity entity1 =
+                TestDataFactory.createTransactionEntityWithAmount(
+                        new BigDecimal("100.00"), expenseCategory);
+        TransactionEntity entity2 =
+                TestDataFactory.createTransactionEntityWithAmount(
+                        new BigDecimal("200.00"), expenseCategory);
+
+        when(transactionRepository.findByDateRange(start, end))
+                .thenReturn(List.of(entity1, entity2));
+
+        // Act
+        Map<String, BigDecimal> result = gateway.getAverageAmountByCategory(start, end);
+
+        // Assert
+        assertThat(result).containsKey(expenseCategory.getName());
+        assertThat(result.get(expenseCategory.getName()))
+                .isEqualByComparingTo(new BigDecimal("150.00"));
+    }
+
+    @Test
+    void getAverageAmountByCategory_ShouldReturnEmptyMap_WhenNoTransactionsExist() {
+        // Arrange
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+        when(transactionRepository.findByDateRange(start, end)).thenReturn(Collections.emptyList());
+
+        // Act
+        Map<String, BigDecimal> result = gateway.getAverageAmountByCategory(start, end);
+
+        // Assert
+        assertThat(result).isEmpty();
     }
 }
