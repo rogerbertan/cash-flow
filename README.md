@@ -1,359 +1,128 @@
-<a id="readme-top"></a>
+# cash-flow
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <h3 align="center">Cash Flow</h3>
+Uma API REST para gerenciamento de finanças pessoais construída com Spring Boot.
 
-  <p align="center">
-    A AI-powered Spring Boot application implementing Clean Architecture principles for daily income and expense transaction tracker
-    <br />
-    <a href="#about-the-project">Explore the docs</a>
-    &middot;
-    <a href="https://github.com/rogerbertan/cash-flow/issues/new?labels=bug">Report Bug</a>
-    &middot;
-    <a href="https://github.com/rogerbertan/cash-flow/issues/new?labels=enhancement">Request Feature</a>
-  </p>
-</div>
+## Sobre o Projeto
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-        <li><a href="#architecture">Architecture</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#api-endpoints">API Endpoints</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-  </ol>
-</details>
+Uma API RESTful para controle de fluxo de caixa pessoal, desenvolvida com Java 21 e Spring Boot 4. O projeto utiliza inteligência artificial como parte central da experiência, oferecendo:
 
-<!-- ABOUT THE PROJECT -->
+- **Gerenciamento de Categorias**: Criar, atualizar, deletar e listar categorias do tipo `RECEITA` ou `DESPESA`
+- **Gerenciamento de Transações**: Registrar e acompanhar movimentações financeiras com operações CRUD completas
+- **Funcionalidades com IA** (Google Gemini):
+  - Sugestão inteligente de categoria com base na descrição da transação
+  - Análise de padrões de gastos e insights financeiros personalizados
+- **Histórico paginado** de transações
+- **Migrações de banco** automatizadas com Flyway
 
-## About The Project
+O projeto segue os princípios de **Clean Architecture**, separando claramente as responsabilidades entre as camadas de domínio, aplicação e infraestrutura.
 
-Cash Flow is a RESTful API for personal finance management, built with Java 21 and Spring Boot 3. AI is at the core of the experience, driving insights, categorization, and financial recommendations based on the user's income and expense history. The project is structured around Clean Architecture, separating domain logic from infrastructure concerns across well-defined layers.
+## Arquitetura
 
-Key Features:
-- Category management for organizing transactions (INCOME/EXPENSE)
-- Transaction tracking with full CRUD operations
-- **AI-powered features** using Google Gemini:
-  - Smart category suggestions based on transaction descriptions
-  - Spending pattern analysis and personalized insights
-- Paginated transaction history
-- Business rule validation (type matching, positive amounts, referential integrity)
-- Database migrations with Flyway
-- Comprehensive test coverage
+A aplicação é organizada em três camadas principais:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- **Domínio** (`domain/`) — entidades imutáveis (`Category`, `Transaction`) e value objects (`Balance`, `MonthlySummary`, `SpendingInsights`), sem dependências externas
+- **Aplicação** (`application/`) — casos de uso com responsabilidade única e interfaces de gateway para persistência e serviços de IA
+- **Infraestrutura** (`infra/`) — controllers REST, entidades JPA, implementações dos gateways, DTOs, mappers e tratamento global de exceções
 
-### Built With
+**Padrões utilizados:** Use Cases com método `execute()`, Gateway Pattern, Mapper Pattern e DTOs como records Java imutáveis.
 
-- [![Java][Java-badge]][Java-url]
-- [![Spring Boot][SpringBoot-badge]][SpringBoot-url]
-- [![PostgreSQL][PostgreSQL-badge]][PostgreSQL-url]
-- [![Maven][Maven-badge]][Maven-url]
+## Tecnologias
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- [![Java][Java]][Java-url]
+- [![Spring Boot][SpringBoot]][SpringBoot-url]
+- [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+- [![Maven][Maven]][Maven-url]
 
-### Architecture
+## Pré-requisitos
 
-This application follows **Clean Architecture** principles with clear separation of concerns:
+- Java 21+
+- Maven 3.x (Maven Wrapper incluído)
+- PostgreSQL 16+
+- Chave de API do Google (para funcionalidades de IA)
 
-**Domain Layer** (`domain/`):
-- Immutable entities (Category, Transaction)
-- Value objects (Balance, MonthlySummary, SpendingInsights, etc.)
-- Zero external dependencies
+## Instalação
 
-**Application Layer** (`application/`):
-- Use case classes with single responsibility
-- Gateway interfaces for persistence and AI service abstraction
-
-**Infrastructure Layer** (`infra/`):
-- REST controllers for HTTP endpoints
-- JPA entities and Spring Data repositories
-- Gateway implementations with business validation
-- DTOs and mappers for data transformation
-- Global exception handling
-
-**Key Patterns:**
-- Use Cases: Simple classes with `execute()` method
-- Gateway Pattern: Application interfaces, infrastructure implementations
-- Mapper Pattern: Separate mappers for create, update, and response operations
-- DTO Pattern: Immutable Java records
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-Follow these steps to get a local copy up and running.
-
-### Prerequisites
-
-- Java 21 or higher
-  ```sh
-  java -version
-  ```
-- PostgreSQL 12 or higher
-  ```sh
-  psql --version
-  ```
-- Maven (Maven Wrapper included)
-
-### Installation
-
-1. Clone the repository
-   ```sh
-   git clone https://github.com/rogerbertan/cash-flow.git
-   ```
-
-2. Navigate to the project directory
-   ```sh
-   cd cash-flow
-   ```
-
-3. Create a PostgreSQL database
-   ```sh
-   createdb cash_flow
-   ```
-
-4. Configure database connection (optional - defaults to localhost)
-   ```sh
-   export DB_HOST=localhost
-   export DB_NAME=cash_flow
-   export DB_USER=postgres
-   export DB_PASSWORD=postgres
-   ```
-
-5. Configure Google API key (required for AI features)
-   ```sh
-   export GOOGLE_API_KEY=your_google_api_key_here
-   ```
-   Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
-
-6. Build the project
-   ```sh
-   ./mvnw clean install
-   ```
-
-7. Run the application
-   ```sh
-   ./mvnw spring-boot:run
-   ```
-
-   Or with custom database configuration:
-   ```sh
-   DB_HOST=localhost DB_NAME=cash_flow DB_USER=postgres DB_PASSWORD=postgres ./mvnw spring-boot:run
-   ```
-
-The application will start on `http://localhost:8080`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-### Running Tests
-
-Run all tests:
 ```sh
-./mvnw test
+git clone https://github.com/rogerbertan/cash-flow.git
+cd cash-flow
 ```
 
-Run specific test class:
+Configure as variáveis de ambiente:
+
 ```sh
-./mvnw test -Dtest=CategoryControllerTest
+export DB_HOST=localhost
+export DB_NAME=cash_flow
+export DB_USER=postgres
+export DB_PASSWORD=postgres
+export GOOGLE_API_KEY=sua_chave_aqui
 ```
 
-Run specific test method:
+Crie o banco de dados e execute a aplicação:
+
 ```sh
-./mvnw test -Dtest=CategoryControllerTest#testCreateCategory
+createdb cash_flow
+./mvnw spring-boot:run
 ```
 
-### Building
+A aplicação estará disponível em `http://localhost:8080`.
 
-Build without tests:
+## Uso
+
+### Endpoints
+
+#### Categorias (`/api/categories`)
+
+| Método | Endpoint               | Descrição                  |
+|--------|------------------------|----------------------------|
+| GET    | `/api/categories`      | Listar todas as categorias |
+| GET    | `/api/categories/{id}` | Buscar categoria por ID    |
+| POST   | `/api/categories`      | Criar nova categoria       |
+| PUT    | `/api/categories/{id}` | Atualizar categoria        |
+| DELETE | `/api/categories/{id}` | Deletar categoria          |
+
+#### Transações (`/api/transactions`)
+
+| Método | Endpoint                              | Descrição                               |
+|--------|---------------------------------------|-----------------------------------------|
+| GET    | `/api/transactions`                   | Listar transações (paginado, 20/página) |
+| GET    | `/api/transactions/{id}`              | Buscar transação por ID                 |
+| POST   | `/api/transactions`                   | Criar nova transação                    |
+| PUT    | `/api/transactions/{id}`              | Atualizar transação                     |
+| DELETE | `/api/transactions/{id}`              | Deletar transação                       |
+| POST   | `/api/transactions/suggest-category`  | Sugestão de categoria via IA            |
+
+#### Insights de IA (`/api/ai`)
+
+| Método | Endpoint                          | Descrição                                                                       |
+|--------|-----------------------------------|---------------------------------------------------------------------------------|
+| GET    | `/api/ai/insights?period=monthly` | Análise de gastos via IA (períodos: `monthly`, `weekly`, `quarterly`, `yearly`) |
+
+### Exemplo de Requisição
+
 ```sh
-./mvnw clean package -DskipTests
+curl -X POST http://localhost:8080/api/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"description": "Salário mensal", "amount": 5000.00, "date": "2026-04-01", "categoryId": 1, "type": "INCOME"}'
 ```
 
-Build with tests:
+Para mais exemplos, consulte a [Coleção do Postman](postman_collection.json).
+
+## Qualidade de Código
+
+O projeto utiliza **Checkstyle** e **Spotless** para garantir consistência e qualidade.
+
 ```sh
-./mvnw clean install
+./mvnw spotless:apply      # formata o código automaticamente
+./mvnw checkstyle:check    # verifica violações de estilo
+./mvnw test                # executa todos os testes
 ```
 
-### Database Migrations
-
-Flyway migrations run automatically on startup. Migration files are located in `src/main/resources/db/migration/`
-
-### Code Quality
-
-The project enforces code quality and consistent formatting using **Checkstyle** and **Spotless**.
-
-Check code style violations:
-```sh
-./mvnw checkstyle:check
-```
-
-Auto-fix code formatting:
-```sh
-./mvnw spotless:apply
-```
-
-Generate Checkstyle HTML report:
-```sh
-./mvnw checkstyle:checkstyle
-xdg-open target/site/checkstyle.html
-```
-
-**Code Style Standards:**
-- Google Java Format (AOSP style, 4-space indentation)
-- Max line length: 120 characters
-- No star imports
-- Max 10 parameters per method
-- Checkstyle runs automatically during build validation phase
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- API ENDPOINTS -->
-
-## API Endpoints
-
-### Health Check
-- `GET /api/health` - Application health status
-
-### Categories
-- `POST /api/categories` - Create a new category
-- `GET /api/categories` - List all categories
-- `GET /api/categories/{id}` - Get category by ID
-- `PUT /api/categories/{id}` - Update category
-- `DELETE /api/categories/{id}` - Delete category
-
-### Transactions
-- `POST /api/transactions` - Create a new transaction
-- `GET /api/transactions` - List all transactions (paginated, default 20 per page)
-- `GET /api/transactions/{id}` - Get transaction by ID
-- `PUT /api/transactions/{id}` - Update transaction
-- `DELETE /api/transactions/{id}` - Delete transaction
-- `POST /api/transactions/suggest-category` - Get AI-powered category suggestion
-
-### AI Insights
-- `GET /api/ai/insights?period=monthly` - Get AI-powered spending analysis and insights
-  - Supported periods: `monthly` (default), `weekly`, `quarterly`, `yearly`
-
-### Example Request
-
-Create a category:
-`POST /api/categories`
-```json
-{
-  "name": "Salary",
-  "type": "INCOME"
-}
-```
-
-Create a transaction:
-`POST /api/transactions`
-```json
-{
-  "description": "Monthly salary",
-  "amount": 5000.00,
-  "date": "2026-01-28",
-  "categoryId": 1,
-  "type": "INCOME"
-}
-```
-
-Get AI category suggestion:
-`POST /api/transactions/suggest-category`
-```json
-{
-  "description": "Coffee at Starbucks",
-  "type": "EXPENSE"
-}
-```
-
-Response:
-```json
-{
-  "suggestedCategory": {
-    "id": 3,
-    "name": "Food & Dining",
-    "type": "EXPENSE"
-  },
-  "confidence": "high",
-  "message": "Category suggestion successful"
-}
-```
-
-Get AI spending insights:
-`GET /api/ai/insights?period=monthly`
-
-Response:
-```json
-{
-  "insights": [
-    "Dining expenses increased 30% this month ($450) compared to last month ($346)",
-    "You typically spend 40% more on weekends ($180) than weekdays",
-    "Coffee purchases average 5 times per week at $4.50 per transaction",
-    "Transportation costs are 15% below your 3-month average",
-    "Grocery spending is consistent at $320/month",
-    "Entertainment spending spiked on the 15th with a $120 transaction",
-    "Consider setting a monthly dining budget of $400 based on your average"
-  ],
-  "period": "monthly",
-  "summary": "Overall spending increased 18% this month, primarily driven by dining and entertainment",
-  "generatedAt": "2026-01-29T15:30:00"
-}
-```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-**Before submitting code:**
-- Run `./mvnw spotless:apply` to format your code
-- Ensure `./mvnw checkstyle:check` passes without violations
-- Run `./mvnw test` to verify all tests pass
-
-**Contribution Steps:**
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-[Java-badge]: https://img.shields.io/badge/Java-21-007396?style=for-the-badge&logo=openjdk&logoColor=white
-[Java-url]: https://www.oracle.com/java/
-[SpringBoot-badge]: https://img.shields.io/badge/Spring%20Boot-4.0.2-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white
+<!-- LINKS E IMAGENS MARKDOWN -->
+[Java]: https://img.shields.io/badge/Java-21-007396?style=for-the-badge&logo=openjdk&logoColor=white
+[Java-url]: https://openjdk.org/
+[SpringBoot]: https://img.shields.io/badge/Spring_Boot-4.0.2-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white
 [SpringBoot-url]: https://spring.io/projects/spring-boot
-[PostgreSQL-badge]: https://img.shields.io/badge/PostgreSQL-12+-336791?style=for-the-badge&logo=postgresql&logoColor=white
+[PostgreSQL]: https://img.shields.io/badge/PostgreSQL-16+-316192?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
-[Maven-badge]: https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white
+[Maven]: https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white
 [Maven-url]: https://maven.apache.org/
