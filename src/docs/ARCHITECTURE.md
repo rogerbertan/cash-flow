@@ -1,67 +1,62 @@
 # Clean Architecture
 
-## Overview
+## Visão Geral
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│                    INFRASTRUCTURE LAYER                     │
-│                                                             │
-│  ┌───────────────────────────────────────────────────────┐ │
-│  │                                                       │ │
-│  │                  APPLICATION LAYER                    │ │
-│  │                                                       │ │
-│  │   ┌───────────────────────────────────────────┐     │ │
-│  │   │             Use Cases                     │     │ │
-│  │   │                                           │     │ │
-│  │   │  • CreateCategoryUseCase                  │     │ │
-│  │   │  • FindAllCategoriesUseCase               │     │ │
-│  │   │  • CreateTransactionUseCase               │     │ │
-│  │   │  • FindAllTransactionsUseCase             │     │ │
-│  │   │  • GetBalanceUseCase                      │     │ │
-│  │   │  • GetMonthlySummaryUseCase               │     │ │
-│  │   │  • SuggestTransactionCategoryUseCase      │     │ │
-│  │   │  • GenerateSpendingInsightsUseCase        │     │ │
-│  │   └───────────────────────────────────────────┘     │ │
-│  │                                                       │ │
-│  │   ┌───────────────────────────────────────────┐     │ │
-│  │   │        Gateway Interfaces                 │     │ │
-│  │   │                                           │     │ │
-│  │   │  • CategoryGateway                        │     │ │
-│  │   │  • TransactionGateway                     │     │ │
-│  │   │  • AICategorizerGateway                   │     │ │
-│  │   │  • AIInsightsGateway                      │     │ │
-│  │   └───────────────────────────────────────────┘     │ │
-│  │                                                       │ │
-│  │   ┌───────────────────────────────────────────┐     │ │
-│  │   │         DOMAIN LAYER                      │     │ │
-│  │   │                                           │     │ │
-│  │   │  • Category (record)                      │     │ │
-│  │   │  • Transaction (record)                   │     │ │
-│  │   │  • Type (enum)                            │     │ │
-│  │   │  • Balance, MonthlySummary (value objects)│     │ │
-│  │   └───────────────────────────────────────────┘     │ │
-│  │                                                       │ │
-│  └───────────────────────────────────────────────────────┘ │
-│                                                             │
-│  Controllers │ DTOs │ Mappers │ Gateway Impl │ JPA Repos   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph INFRA["Camada de Infraestrutura"]
+        subgraph APP["Camada de Aplicação"]
+            subgraph UC["Use Cases"]
+                UC1[CreateCategoryUseCase]
+                UC2[FindAllCategoriesUseCase]
+                UC3[CreateTransactionUseCase]
+                UC4[FindAllTransactionsUseCase]
+                UC5[GetBalanceUseCase]
+                UC6[GetMonthlySummaryUseCase]
+                UC7[SuggestTransactionCategoryUseCase]
+                UC8[GenerateSpendingInsightsUseCase]
+            end
+
+            subgraph GW["Gateway Interfaces"]
+                GW1[CategoryGateway]
+                GW2[TransactionGateway]
+                GW3[AICategorizerGateway]
+                GW4[AIInsightsGateway]
+            end
+
+            subgraph DOMAIN["Camada de Domínio"]
+                D1[Category - record]
+                D2[Transaction - record]
+                D3[Type - enum]
+                D4[Balance - value object]
+                D5[MonthlySummary - value object]
+            end
+        end
+
+        CTRL[Controllers]
+        DTO[DTOs]
+        MAP[Mappers]
+        GWI[Gateway Impls]
+        JPA[JPA Repositories]
+    end
 ```
 
-**Core Principle**: Dependencies point inward. The domain layer has **zero external dependencies**. The application layer depends only on the domain.
+**Princípio Central**: As dependências apontam para dentro. A camada de domínio tem **zero dependências externas**. A camada de aplicação depende apenas do domínio.
 
-## Layer Structure
+---
 
-### Domain Layer
+## Estrutura das Camadas
+
+### Camada de Domínio
+
 ```
 domain/
-├── entities/           # Immutable business objects (records)
+├── entities/           # Objetos de negócio imutáveis (records)
 │   ├── Category
 │   └── Transaction
-├── enums/             # Business enumerations
+├── enums/             # Enumerações de negócio
 │   └── Type
-└── valueobjects/      # Immutable data structures
+└── valueobjects/      # Estruturas de dados imutáveis
     ├── Balance
     ├── CategorySuggestion
     ├── CategorySummary
@@ -70,15 +65,16 @@ domain/
     └── TransactionAnalysisData
 ```
 
-### Application Layer
+### Camada de Aplicação
+
 ```
 application/
-├── gateway/           # Persistence & service contracts (interfaces)
+├── gateway/           # Contratos de persistência e serviços (interfaces)
 │   ├── CategoryGateway
 │   ├── TransactionGateway
 │   ├── AICategorizerGateway
 │   └── AIInsightsGateway
-└── usecases/          # Business operations
+└── usecases/          # Operações de negócio
     ├── category/
     │   ├── CreateCategoryUseCase
     │   ├── FindAllCategoriesUseCase
@@ -100,16 +96,17 @@ application/
         └── GenerateSpendingInsightsUseCase
 ```
 
-### Infrastructure Layer
+### Camada de Infraestrutura
+
 ```
 infra/
-├── presentation/      # REST API Controllers
+├── presentation/      # Controllers REST API
 │   ├── CategoryController
 │   ├── TransactionController
 │   ├── SummaryController
 │   ├── AIInsightsController
 │   └── HealthController
-├── dto/               # API Request/Response objects
+├── dto/               # Objetos de Request/Response da API
 │   ├── BalanceResponse
 │   ├── CategoriesSummaryResponse
 │   ├── CategoryCreateRequest
@@ -124,7 +121,7 @@ infra/
 │   ├── TransactionCreateRequest
 │   ├── TransactionResponse
 │   └── TransactionUpdateRequest
-├── mapper/            # Object conversions
+├── mapper/            # Conversões de objetos
 │   ├── BalanceResponseMapper
 │   ├── CategoryCreateMapper
 │   ├── CategoryEntityMapper
@@ -138,135 +135,79 @@ infra/
 │   ├── TransactionEntityMapper
 │   ├── TransactionResponseMapper
 │   └── TransactionUpdateRequestMapper
-├── gateway/           # Gateway implementations
+├── gateway/           # Implementações dos gateways
 │   ├── CategoryRepositoryGateway
 │   ├── TransactionRepositoryGateway
 │   ├── GeminiCategorizerGateway
 │   └── GeminiInsightsGateway
-├── persistence/       # JPA entities & repositories
+├── persistence/       # Entidades JPA e repositórios
 │   ├── CategoryEntity
 │   ├── CategoryRepository
 │   ├── TransactionEntity
 │   └── TransactionRepository
-├── exception/         # Exception handling
+├── exception/         # Tratamento de exceções
 │   ├── BudgetPlannerException (abstract)
 │   ├── ResourceNotFoundException
 │   ├── InvalidTransactionException
 │   ├── AICategorizeException
 │   ├── AIInsightsException
 │   └── GlobalExceptionHandler
-├── config/            # Configuration
+├── config/            # Configuração
 │   └── AIProperties
-├── util/              # Utilities
+├── util/              # Utilitários
 │   ├── PeriodCalculator
 │   └── DateRange
-└── beans/             # Dependency injection
+└── beans/             # Injeção de dependência
     └── BeanConfiguration
 ```
 
-## Dependency Flow
+---
 
-```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│             │      │             │      │             │
-│ Controllers │─────▶│  Use Cases  │─────▶│  Gateways   │
-│             │      │             │      │ (interface) │
-└─────────────┘      └─────────────┘      └──────┬──────┘
-                                                  │
-                                                  │ implements
-                                                  │
-                                         ┌────────▼────────┐
-                                         │                 │
-                                         │ Gateway Impls   │
-                                         │                 │
-                                         └────────┬────────┘
-                                                  │
-                                                  │
-                                         ┌────────▼────────┐
-                                         │                 │
-                                         │  Repositories   │
-                                         │                 │
-                                         └─────────────────┘
+## Fluxo de Dependências
+
+```mermaid
+flowchart LR
+    CTRL[Controllers] --> UC[Use Cases]
+    UC --> GWI[Gateway Interface]
+    GWI -->|implements| GWL[Gateway Impl]
+    GWL --> REPO[Repositories]
 ```
 
-## Request Flow
+---
 
-### Example: Creating a Transaction
+## Fluxo de uma Requisição
 
-```
-     HTTP REQUEST                    APPLICATION               INFRASTRUCTURE
+### Exemplo: Criando uma Transaction
 
-         │
-         │  POST /api/transactions
-         │  {JSON body}
-         │
-         ▼
-┌────────────────────┐
-│ Transaction        │
-│ Controller         │
-└──────┬─────────────┘
-       │
-       │ 1. Receive request
-       │
-       ▼
-┌────────────────────┐
-│ Transaction        │
-│ CreateMapper       │
-└──────┬─────────────┘
-       │
-       │ 2. Map DTO → Domain
-       │
-       ▼                              ┌────────────────────┐
-       ├─────────────────────────────▶│ Create             │
-       │                              │ TransactionUseCase │
-       │                              └──────┬─────────────┘
-       │                                     │
-       │                                     │ 3. Execute use case
-       │                                     │
-       │                              ┌──────▼─────────────┐
-       │                              │ Transaction        │
-       │                              │ Gateway            │
-       │                              │ (interface)        │
-       │                              └──────┬─────────────┘
-       │                                     │
-       │                                     │
-       │                              ┌──────▼──────────────────┐
-       │                              │ Transaction             │
-       │                              │ RepositoryGateway       │
-       │                              │                         │
-       │                              │ 4. Validate:            │
-       │                              │   • Category exists     │
-       │                              │   • Amount > 0          │
-       │                              │   • Type matches        │
-       │                              └──────┬──────────────────┘
-       │                                     │
-       │                                     │ 5. Convert & persist
-       │                                     │
-       │                              ┌──────▼─────────────┐
-       │                              │ Transaction        │
-       │                              │ JpaRepository      │
-       │                              └──────┬─────────────┘
-       │                                     │
-       │◀────────────────────────────────────┘
-       │ 6. Return domain entity
-       │
-       ▼
-┌────────────────────┐
-│ Transaction        │
-│ ResponseMapper     │
-└──────┬─────────────┘
-       │
-       │ 7. Map Domain → DTO
-       │
-       ▼
-    HTTP RESPONSE
-    201 Created
-    {JSON body}
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant CTRL as TransactionController
+    participant CM as TransactionCreateMapper
+    participant UC as CreateTransactionUseCase
+    participant GW as TransactionGateway
+    participant GWI as TransactionRepositoryGateway
+    participant JPA as TransactionJpaRepository
+
+    C->>CTRL: POST /api/transactions {JSON}
+    CTRL->>CM: 1. Map DTO → Domain
+    CM->>UC: 2. execute(transaction)
+    UC->>GW: 3. gateway.create(transaction)
+    GW->>GWI: 4. Validate & persist
+    Note over GWI: • Category exists<br/>• Amount > 0<br/>• Type matches
+    GWI->>JPA: 5. save(entity)
+    JPA-->>GWI: TransactionEntity
+    GWI-->>UC: Transaction (domain)
+    UC-->>CTRL: Transaction (domain)
+    CTRL->>CM: 6. Map Domain → DTO
+    CM-->>C: 201 Created {JSON}
 ```
 
-## Component Relationships
+---
 
-### Use Case Pattern
+## Relacionamento entre Componentes
+
+### Padrão Use Case
 
 ```java
 public class CreateCategoryUseCase {
@@ -282,105 +223,88 @@ public class CreateCategoryUseCase {
 }
 ```
 
-**Characteristics:**
-- Single responsibility
-- Single `execute()` method
-- Depends on gateway interface (not implementation)
-- No framework dependencies
+**Características:**
+- Responsabilidade única
+- Método único `execute()`
+- Depende da interface do gateway (não da implementação)
+- Sem dependências de framework
 
-### Gateway Pattern
+### Padrão Gateway
 
-```
-┌─────────────────────┐
-│  CategoryGateway    │  ◀─── Application interface
-│  (interface)        │
-│                     │
-│  + create()         │
-│  + findAll()        │
-│  + findById()       │
-│  + update()         │
-│  + delete()         │
-└──────────┬──────────┘
-           │
-           │ implements
-           │
-┌──────────▼─────────────────┐
-│ CategoryRepositoryGateway  │  ◀─── Infrastructure implementation
-│                            │
-│  Responsibilities:         │
-│  • Business validation     │
-│  • Entity conversion       │
-│  • Repository coordination │
-└────────────────────────────┘
+```mermaid
+classDiagram
+    class CategoryGateway {
+        <<interface>>
+        +create(category) Category
+        +findAll() List~Category~
+        +findById(id) Category
+        +update(id, category) Category
+        +delete(id) void
+    }
+
+    class CategoryRepositoryGateway {
+        +create(category) Category
+        +findAll() List~Category~
+        +findById(id) Category
+        +update(id, category) Category
+        +delete(id) void
+    }
+
+    CategoryGateway <|.. CategoryRepositoryGateway : implements
 ```
 
-### Mapper Flow
+### Fluxo dos Mappers
 
-```
-Request DTO ─────▶ Create Mapper ─────▶ Domain Entity
-                                              │
-                                              ▼
-                                        Use Case Logic
-                                              │
-                                              ▼
-                                        Domain Entity ─────▶ Response Mapper ─────▶ Response DTO
+```mermaid
+flowchart LR
+    REQ[Request DTO] -->|CreateMapper| DOM1[Domain Entity]
+    DOM1 --> UC[Use Case Logic]
+    UC --> DOM2[Domain Entity]
+    DOM2 -->|ResponseMapper| RES[Response DTO]
 ```
 
-## Validation Strategy
+---
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                      VALIDATION LAYERS                   │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  Controller Layer                                        │
-│  ├─ @Valid annotation (basic DTO validation)            │
-│  └─ @NotNull, @Size, etc.                               │
-│                                                          │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  Gateway Implementation Layer                            │
-│  ├─ Business rules validation                           │
-│  ├─ Cross-entity validation                             │
-│  ├─ Category existence checks                           │
-│  ├─ Amount validation (> 0)                             │
-│  ├─ Type matching validation                            │
-│  └─ Referential integrity                               │
-│                                                          │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  Database Layer                                          │
-│  ├─ Foreign key constraints                             │
-│  ├─ Check constraints                                   │
-│  └─ Unique constraints                                  │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+## Estratégia de Validação
+
+```mermaid
+flowchart TD
+    A[Requisição HTTP] --> B[Controller Layer]
+    B -->|"@Valid, @NotNull, @Size"| C{Válido?}
+    C -->|Não| ERR1[400 Bad Request]
+    C -->|Sim| D[Gateway Implementation]
+    D -->|"Regras de negócio<br/>Validação cruzada<br/>Existência de categoria<br/>Amount > 0<br/>Type matching"| E{Válido?}
+    E -->|Não| ERR2[422 / 404]
+    E -->|Sim| F[Database Layer]
+    F -->|"Foreign keys<br/>Check constraints<br/>Unique constraints"| G[Persistido com sucesso]
 ```
 
-## Key Architectural Decisions
+---
 
-### 1. Explicit Application Layer
-- Use cases and gateway interfaces live in `application/`, separate from `domain/`
-- Domain remains pure: entities, enums, and value objects only
-- Clear boundary between business logic orchestration and core business rules
+## Decisões Arquiteturais
 
-### 2. Use Cases Without Interfaces
-- Simplified from interface + implementation pattern
-- Concrete classes are sufficient for single responsibility operations
-- Reduces boilerplate and complexity
+### 1. Camada de Aplicação Explícita
+- Use cases e interfaces de gateway vivem em `application/`, separados do `domain/`
+- O domínio permanece puro: apenas entities, enums e value objects
+- Fronteira clara entre orquestração de lógica de negócio e regras centrais de negócio
 
-### 3. Gateway Pattern for Persistence
-- Application layer defines contracts via interfaces
-- Infrastructure provides implementations
-- Enables testing with mocks
-- Allows swapping persistence strategies
+### 2. Use Cases Sem Interfaces
+- Simplificado do padrão interface + implementação
+- Classes concretas são suficientes para operações de responsabilidade única
+- Reduz boilerplate e complexidade
 
-### 4. Validation in Gateway Implementations
-- Business rules enforced at gateway level
-- Use cases remain simple and focused
-- Single point of business logic enforcement
+### 3. Padrão Gateway para Persistência
+- A camada de aplicação define contratos via interfaces
+- A infraestrutura fornece as implementações
+- Permite testes com mocks
+- Permite trocar estratégias de persistência
 
-### 5. Immutable Entities
-- Java records for entities, value objects, and DTOs
-- Prevents accidental state mutation
-- Thread-safe by design
+### 4. Validação nas Implementações de Gateway
+- Regras de negócio aplicadas no nível do gateway
+- Use cases permanecem simples e focados
+- Ponto único de aplicação de lógica de negócio
+
+### 5. Entidades Imutáveis
+- Java records para entities, value objects e DTOs
+- Previne mutação acidental de estado
+- Thread-safe por design
