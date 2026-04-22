@@ -1,7 +1,11 @@
 package dev.rogerbertan.cashflow.infra.exception;
 
 import dev.rogerbertan.cashflow.infra.dto.ErrorResponse;
+
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -53,10 +57,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTypeMismatchException(
             MethodArgumentTypeMismatchException ex) {
 
+        Class<?> requiredType = ex.getRequiredType();
         String error =
-                String.format(
-                        "Parameter '%s' should be of type %s",
-                        ex.getName(), ex.getRequiredType().getSimpleName());
+                requiredType != null
+                        ? String.format(
+                                "Parameter '%s' should be of type %s",
+                                ex.getName(), requiredType.getSimpleName())
+                        : String.format("Parameter '%s' has an invalid type", ex.getName());
 
         ErrorResponse errorResponse = new ErrorResponse(error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -74,10 +81,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(
             HttpRequestMethodNotSupportedException ex) {
 
+        Set<HttpMethod> supportedMethods = ex.getSupportedHttpMethods();
+        String supported =
+                supportedMethods != null
+                        ? supportedMethods.stream()
+                                .map(HttpMethod::name)
+                                .collect(Collectors.joining(", "))
+                        : "none";
         String error =
                 String.format(
                         "Method %s is not supported for this endpoint. Supported methods: %s",
-                        ex.getMethod(), String.join(", ", ex.getSupportedMethods()));
+                        ex.getMethod(), supported);
 
         ErrorResponse errorResponse = new ErrorResponse(error);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorResponse);
