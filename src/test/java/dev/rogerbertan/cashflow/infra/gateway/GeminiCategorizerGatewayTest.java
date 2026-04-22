@@ -120,9 +120,9 @@ class GeminiCategorizerGatewayTest {
         String result =
                 gateway.buildPrompt("grocery shopping", Type.EXPENSE, List.of(expenseCategory));
 
-        assertThat(result).contains(expenseCategory.name());
-        assertThat(result).contains("grocery shopping");
-        assertThat(result).contains("EXPENSE");
+        assertThat(result).contains(expenseCategory.name())
+                        .contains("grocery shopping")
+                        .contains("EXPENSE");
     }
 
     @Test
@@ -132,10 +132,8 @@ class GeminiCategorizerGatewayTest {
                 new GeminiCategorizerGateway(categoryGateway, aiProperties);
         Category incomeCategory = TestDataFactory.createIncomeCategory();
 
-        assertThatThrownBy(
-                        () ->
-                                gateway.buildPrompt(
-                                        "grocery shopping", Type.EXPENSE, List.of(incomeCategory)))
+        List<Category> categories = List.of(incomeCategory);
+        assertThatThrownBy(() -> gateway.buildPrompt("grocery shopping", Type.EXPENSE, categories))
                 .isInstanceOf(AICategorizeException.class)
                 .hasMessageContaining("No categories found for type: EXPENSE");
     }

@@ -815,8 +815,8 @@ class TransactionRepositoryGatewayTest {
         Map<String, Long> result = gateway.getTransactionCountByCategory(start, end);
 
         // Assert
-        assertThat(result).containsKey(entity1.getCategory().getName());
-        assertThat(result.get(entity1.getCategory().getName())).isEqualTo(2L);
+        assertThat(result).containsKey(entity1.getCategory().getName())
+                .containsEntry(entity1.getCategory().getName(), 2L);
     }
 
     @Test

@@ -92,8 +92,8 @@ class GeminiInsightsGatewayTest {
 
         List<String> result = gateway.parseInsights(response);
 
-        assertThat(result).hasSize(3);
-        assertThat(result).containsExactly("Insight one", "Insight two", "Insight three");
+        assertThat(result).hasSize(3)
+                        .containsExactly("Insight one", "Insight two", "Insight three");
     }
 
     @Test
@@ -166,8 +166,8 @@ class GeminiInsightsGatewayTest {
 
         String result = gateway.generateSummary(List.of(longInsight, "Second insight"));
 
-        assertThat(result).hasSize(300);
-        assertThat(result).endsWith("...");
+        assertThat(result).hasSize(300)
+                        .endsWith("...");
     }
 
     // formatAmount tests
