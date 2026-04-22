@@ -135,12 +135,12 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.30</minimum>
+                                            <minimum>0.80</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.30</minimum>
+                                            <minimum>0.75</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -164,6 +164,7 @@
                         <exclude>**/infra/config/**/*</exclude>
                         <!-- Exclude JPA entities -->
                         <exclude>**/infra/persistence/entities/**/*</exclude>
+                        <exclude>**/infra/persistence/*Entity.class</exclude>
                         <!-- Exclude exception classes -->
                         <exclude>**/infra/exception/*Exception.class</exclude>
                     </excludes>

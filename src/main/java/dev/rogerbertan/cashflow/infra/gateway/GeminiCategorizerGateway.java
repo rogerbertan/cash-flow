@@ -23,6 +23,13 @@ public class GeminiCategorizerGateway implements AICategorizerGateway {
         this.geminiClient = initializeClient();
     }
 
+    GeminiCategorizerGateway(
+            CategoryGateway categoryGateway, AIProperties aiProperties, Client geminiClient) {
+        this.categoryGateway = categoryGateway;
+        this.aiProperties = aiProperties;
+        this.geminiClient = geminiClient;
+    }
+
     private Client initializeClient() {
         try {
             if (aiProperties.getApiKey() == null || aiProperties.getApiKey().isEmpty()) {
@@ -63,7 +70,7 @@ public class GeminiCategorizerGateway implements AICategorizerGateway {
         }
     }
 
-    private String buildPrompt(String description, Type type, List<Category> categories) {
+    String buildPrompt(String description, Type type, List<Category> categories) {
         List<String> categoryNames =
                 categories.stream()
                         .filter(category -> category.type() == type)
@@ -105,7 +112,7 @@ public class GeminiCategorizerGateway implements AICategorizerGateway {
         }
     }
 
-    private Category matchCategory(String aiResponse, List<Category> categories, Type type) {
+    Category matchCategory(String aiResponse, List<Category> categories, Type type) {
         return categories.stream()
                 .filter(category -> category.type() == type)
                 .filter(category -> category.name().equalsIgnoreCase(aiResponse))

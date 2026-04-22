@@ -29,6 +29,11 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
         }
     }
 
+    GeminiInsightsGateway(AIProperties aiProperties, Client geminiClient) {
+        this.aiProperties = aiProperties;
+        this.geminiClient = geminiClient;
+    }
+
     private Client initializeClient() {
         try {
             if (aiProperties.getApiKey() == null || aiProperties.getApiKey().isEmpty()) {
@@ -188,7 +193,7 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
         }
     }
 
-    private List<String> parseInsights(String aiResponse) {
+    List<String> parseInsights(String aiResponse) {
         return Arrays.stream(aiResponse.split("\n"))
                 .map(String::trim)
                 .filter(line -> !line.isEmpty())
@@ -197,7 +202,7 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
                 .toList();
     }
 
-    private String generateSummary(List<String> insights) {
+    String generateSummary(List<String> insights) {
         if (insights.isEmpty()) {
             return "No significant patterns detected";
         }
@@ -214,11 +219,11 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
         return firstInsight;
     }
 
-    private String formatAmount(BigDecimal amount) {
+    String formatAmount(BigDecimal amount) {
         return amount.setScale(2, RoundingMode.HALF_UP).toString();
     }
 
-    private BigDecimal calculatePercentageChange(BigDecimal previous, BigDecimal current) {
+    BigDecimal calculatePercentageChange(BigDecimal previous, BigDecimal current) {
         if (previous.compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
         }
@@ -229,7 +234,7 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
                 .setScale(1, RoundingMode.HALF_UP);
     }
 
-    private String formatPercentage(BigDecimal percentage) {
+    String formatPercentage(BigDecimal percentage) {
         if (percentage.compareTo(BigDecimal.ZERO) > 0) {
             return "+" + percentage + "%";
         } else if (percentage.compareTo(BigDecimal.ZERO) < 0) {
