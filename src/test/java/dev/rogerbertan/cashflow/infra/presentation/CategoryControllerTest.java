@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import dev.rogerbertan.cashflow.application.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.application.usecases.category.*;
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.enums.Type;
-import dev.rogerbertan.cashflow.domain.usecases.*;
 import dev.rogerbertan.cashflow.infra.dto.CategoryCreateRequest;
 import dev.rogerbertan.cashflow.infra.dto.CategoryResponse;
 import dev.rogerbertan.cashflow.infra.dto.CategoryUpdateRequest;

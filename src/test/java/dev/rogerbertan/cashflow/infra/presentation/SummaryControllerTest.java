@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import dev.rogerbertan.cashflow.application.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.application.usecases.summary.GetBalanceUseCase;
 import dev.rogerbertan.cashflow.application.usecases.summary.GetCategoriesSummaryUseCase;
 import dev.rogerbertan.cashflow.application.usecases.summary.GetMonthlySummaryUseCase;
-import dev.rogerbertan.cashflow.domain.usecases.*;
 import dev.rogerbertan.cashflow.domain.valueobjects.Balance;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySummary;
 import dev.rogerbertan.cashflow.domain.valueobjects.MonthlySummary;
