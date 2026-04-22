@@ -1,10 +1,9 @@
-package dev.rogerbertan.cashflow.domain.usecases;
+package dev.rogerbertan.cashflow.application.usecases.category;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.application.gateway.CategoryGateway;
-import dev.rogerbertan.cashflow.application.usecases.category.FindAllCategoriesUseCase;
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.enums.Type;
 import java.time.LocalDateTime;

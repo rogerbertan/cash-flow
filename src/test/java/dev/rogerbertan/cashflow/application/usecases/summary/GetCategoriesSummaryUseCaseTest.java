@@ -1,10 +1,9 @@
-package dev.rogerbertan.cashflow.domain.usecases;
+package dev.rogerbertan.cashflow.application.usecases.summary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
-import dev.rogerbertan.cashflow.application.usecases.summary.GetCategoriesSummaryUseCase;
 import dev.rogerbertan.cashflow.domain.valueobjects.CategorySummary;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

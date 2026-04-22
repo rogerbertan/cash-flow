@@ -1,10 +1,10 @@
-package dev.rogerbertan.cashflow.domain.usecases;
+package dev.rogerbertan.cashflow.application.usecases.transaction;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
-import dev.rogerbertan.cashflow.application.usecases.transaction.DeleteTransactionUseCase;
+import dev.rogerbertan.cashflow.application.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.infra.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;

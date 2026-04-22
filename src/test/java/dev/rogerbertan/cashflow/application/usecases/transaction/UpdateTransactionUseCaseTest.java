@@ -1,4 +1,4 @@
-package dev.rogerbertan.cashflow.domain.usecases;
+package dev.rogerbertan.cashflow.application.usecases.transaction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.*;
 
 import dev.rogerbertan.cashflow.application.gateway.TransactionGateway;
-import dev.rogerbertan.cashflow.application.usecases.transaction.UpdateTransactionUseCase;
+import dev.rogerbertan.cashflow.application.usecases.TestDataFactory;
 import dev.rogerbertan.cashflow.domain.entities.Category;
 import dev.rogerbertan.cashflow.domain.entities.Transaction;
 import dev.rogerbertan.cashflow.domain.enums.Type;
