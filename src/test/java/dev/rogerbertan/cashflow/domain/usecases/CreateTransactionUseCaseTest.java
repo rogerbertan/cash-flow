@@ -52,8 +52,7 @@ class CreateTransactionUseCaseTest {
         Transaction result = useCase.execute(inputTransaction);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(savedTransaction);
+        assertThat(result).isNotNull().isEqualTo(savedTransaction);
         assertThat(result.id()).isEqualTo(1L);
         assertThat(result.amount()).isEqualByComparingTo(new BigDecimal("1000.00"));
         assertThat(result.description()).isEqualTo("Salary payment");

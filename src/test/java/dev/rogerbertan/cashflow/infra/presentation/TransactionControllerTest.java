@@ -21,6 +21,7 @@ import dev.rogerbertan.cashflow.infra.mapper.TransactionResponseMapper;
 import dev.rogerbertan.cashflow.infra.mapper.TransactionUpdateRequestMapper;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -83,7 +84,7 @@ class TransactionControllerTest {
         assertThat(result.getBody()).isNotNull();
         assertThat(result.getBody().getContent()).hasSize(2);
         assertThat(result.getBody().getTotalElements()).isEqualTo(2);
-        assertThat(result.getBody().getNumber()).isEqualTo(0);
+        assertThat(result.getBody().getNumber()).isZero();
         assertThat(result.getBody().getSize()).isEqualTo(20);
     }
 
@@ -107,10 +108,12 @@ class TransactionControllerTest {
         verify(findAllTransactionUseCase, times(1)).execute(pageableCaptor.capture());
 
         Pageable capturedPageable = pageableCaptor.getValue();
-        assertThat(capturedPageable.getPageNumber()).isEqualTo(0);
+        assertThat(capturedPageable.getPageNumber()).isZero();
         assertThat(capturedPageable.getPageSize()).isEqualTo(20);
         assertThat(capturedPageable.getSort().getOrderFor("createdAt")).isNotNull();
-        assertThat(capturedPageable.getSort().getOrderFor("createdAt").getDirection())
+        assertThat(
+                        Objects.requireNonNull(capturedPageable.getSort().getOrderFor("createdAt"))
+                                .getDirection())
                 .isEqualTo(Sort.Direction.DESC);
     }
 
@@ -137,7 +140,9 @@ class TransactionControllerTest {
         assertThat(capturedPageable.getPageNumber()).isEqualTo(2);
         assertThat(capturedPageable.getPageSize()).isEqualTo(10);
         assertThat(capturedPageable.getSort().getOrderFor("amount")).isNotNull();
-        assertThat(capturedPageable.getSort().getOrderFor("amount").getDirection())
+        assertThat(
+                        Objects.requireNonNull(capturedPageable.getSort().getOrderFor("amount"))
+                                .getDirection())
                 .isEqualTo(Sort.Direction.ASC);
     }
 
@@ -164,6 +169,7 @@ class TransactionControllerTest {
         // Assert
         verify(transactionResponseMapper, times(1)).toDTO(transaction1);
         verify(transactionResponseMapper, times(1)).toDTO(transaction2);
+        assert result.getBody() != null;
         assertThat(result.getBody().getContent()).containsExactly(response1, response2);
     }
 
@@ -186,7 +192,13 @@ class TransactionControllerTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
         verify(findAllTransactionUseCase).execute(pageableCaptor.capture());
 
-        assertThat(pageableCaptor.getValue().getSort().getOrderFor("createdAt").getDirection())
+        assertThat(
+                        Objects.requireNonNull(
+                                        pageableCaptor
+                                                .getValue()
+                                                .getSort()
+                                                .getOrderFor("createdAt"))
+                                .getDirection())
                 .isEqualTo(Sort.Direction.ASC);
     }
 

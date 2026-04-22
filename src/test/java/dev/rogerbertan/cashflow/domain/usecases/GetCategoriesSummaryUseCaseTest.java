@@ -43,8 +43,7 @@ class GetCategoriesSummaryUseCaseTest {
         List<CategorySummary> result = useCase.execute(month, year);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).hasSize(3);
+        assertThat(result).isNotNull().hasSize(3);
         assertThat(result.get(0).categoryName()).isEqualTo("Salary");
         assertThat(result.get(1).categoryName()).isEqualTo("Food");
         assertThat(result.get(2).categoryName()).isEqualTo("Transport");
@@ -115,8 +114,7 @@ class GetCategoriesSummaryUseCaseTest {
         List<CategorySummary> result = useCase.execute(month, year);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEmpty();
+        assertThat(result).isNotNull().isEmpty();
         verify(transactionGateway, times(1)).getCategorySummaries(month, year);
     }
 
@@ -136,7 +134,7 @@ class GetCategoriesSummaryUseCaseTest {
 
         // Assert
         assertThat(result).hasSize(1);
-        CategorySummary mappedSummary = result.get(0);
+        CategorySummary mappedSummary = result.getFirst();
         assertThat(mappedSummary.categoryName()).isEqualTo("Food");
         assertThat(mappedSummary.totalIncome()).isEqualByComparingTo(new BigDecimal("100.56"));
         assertThat(mappedSummary.totalExpense()).isEqualByComparingTo(new BigDecimal("50.44"));

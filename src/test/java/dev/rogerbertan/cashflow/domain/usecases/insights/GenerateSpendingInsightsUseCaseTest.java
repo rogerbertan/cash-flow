@@ -13,8 +13,10 @@ import dev.rogerbertan.cashflow.domain.enums.Type;
 import dev.rogerbertan.cashflow.domain.valueobjects.SpendingInsights;
 import dev.rogerbertan.cashflow.domain.valueobjects.TransactionAnalysisData;
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +75,8 @@ class GenerateSpendingInsightsUseCaseTest {
     void execute_ShouldReturnInsights_WhenValidPeriodProvided() {
         when(transactionGateway.findTransactionsByDateRange(any(), any()))
                 .thenReturn(sampleTransactions);
-        when(transactionGateway.getExpensesByDayOfWeek(any(), any())).thenReturn(new HashMap<>());
+        when(transactionGateway.getExpensesByDayOfWeek(any(), any()))
+                .thenReturn(new EnumMap<>(DayOfWeek.class));
         when(transactionGateway.getTransactionCountByCategory(any(), any()))
                 .thenReturn(new HashMap<>());
         when(transactionGateway.getAverageAmountByCategory(any(), any()))
@@ -114,7 +117,7 @@ class GenerateSpendingInsightsUseCaseTest {
 
         assertNotNull(result);
         assertEquals("monthly", result.period());
-        assertTrue(result.insights().get(0).contains("Insufficient data"));
+        assertTrue(result.insights().getFirst().contains("Insufficient data"));
         verify(aiInsightsGateway, never()).generateInsights(any());
     }
 
@@ -126,7 +129,7 @@ class GenerateSpendingInsightsUseCaseTest {
 
         assertNotNull(result);
         assertEquals("monthly", result.period());
-        assertTrue(result.insights().get(0).contains("No transactions found"));
+        assertTrue(result.insights().getFirst().contains("No transactions found"));
         verify(aiInsightsGateway, never()).generateInsights(any());
     }
 
@@ -134,7 +137,8 @@ class GenerateSpendingInsightsUseCaseTest {
     void execute_ShouldPassCorrectDataToGateway() {
         when(transactionGateway.findTransactionsByDateRange(any(), any()))
                 .thenReturn(sampleTransactions);
-        when(transactionGateway.getExpensesByDayOfWeek(any(), any())).thenReturn(new HashMap<>());
+        when(transactionGateway.getExpensesByDayOfWeek(any(), any()))
+                .thenReturn(new EnumMap<>(DayOfWeek.class));
         when(transactionGateway.getTransactionCountByCategory(any(), any()))
                 .thenReturn(new HashMap<>());
         when(transactionGateway.getAverageAmountByCategory(any(), any()))

@@ -39,8 +39,7 @@ class SuggestTransactionCategoryUseCaseTest {
         CategorySuggestion result = useCase.execute(description, type);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(expectedSuggestion);
+        assertThat(result).isNotNull().isEqualTo(expectedSuggestion);
         assertThat(result.category()).isNotNull();
         assertThat(result.category().name()).isEqualTo("Food");
         assertThat(result.confidence()).isEqualTo("high");

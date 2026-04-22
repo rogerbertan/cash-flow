@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +125,7 @@ public class TransactionRepositoryGateway implements TransactionGateway {
         List<TransactionEntity> transactions =
                 transactionRepository.findByDateRange(startDate, endDate);
 
-        Map<DayOfWeek, BigDecimal> expensesByDayOfWeek = new HashMap<>();
+        Map<DayOfWeek, BigDecimal> expensesByDayOfWeek = new EnumMap<>(DayOfWeek.class);
         for (DayOfWeek day : DayOfWeek.values()) {
             expensesByDayOfWeek.put(day, BigDecimal.ZERO);
         }

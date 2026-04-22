@@ -10,6 +10,7 @@ import dev.rogerbertan.cashflow.infra.config.AIProperties;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ class GeminiInsightsGatewayTest {
         when(aiProperties.getModelName()).thenReturn("gemini-2.5-flash-lite");
         when(aiProperties.isEnabled()).thenReturn(false);
 
-        Map<DayOfWeek, BigDecimal> dayOfWeekMap = new HashMap<>();
+        Map<DayOfWeek, BigDecimal> dayOfWeekMap = new EnumMap<>(DayOfWeek.class);
         dayOfWeekMap.put(DayOfWeek.MONDAY, new BigDecimal("100.00"));
 
         sampleData =
@@ -54,7 +55,7 @@ class GeminiInsightsGatewayTest {
 
         assertNotNull(result);
         assertEquals("monthly", result.period());
-        assertTrue(result.insights().get(0).contains("disabled"));
+        assertTrue(result.insights().getFirst().contains("disabled"));
     }
 
     @Test
@@ -66,7 +67,7 @@ class GeminiInsightsGatewayTest {
         SpendingInsights result = gateway.generateInsights(sampleData);
 
         assertNotNull(result);
-        assertTrue(result.insights().get(0).contains("disabled"));
+        assertTrue(result.insights().getFirst().contains("disabled"));
     }
 
     @Test
@@ -78,6 +79,6 @@ class GeminiInsightsGatewayTest {
         SpendingInsights result = gateway.generateInsights(sampleData);
 
         assertNotNull(result);
-        assertTrue(result.insights().get(0).contains("disabled"));
+        assertTrue(result.insights().getFirst().contains("disabled"));
     }
 }

@@ -13,8 +13,6 @@ public class FindAllCategoriesUseCase {
     }
 
     public List<Category> execute() {
-
-        List<Category> categories = categoryGateway.findAllCategories();
-        return categories;
+        return categoryGateway.findAllCategories();
     }
 }

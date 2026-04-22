@@ -68,7 +68,7 @@ class TransactionRepositoryGatewayTest {
         assertThat(result).isNotNull();
         assertThat(result.getContent()).hasSize(2);
         assertThat(result.getTotalElements()).isEqualTo(2);
-        assertThat(result.getNumber()).isEqualTo(0);
+        assertThat(result.getNumber()).isZero();
         verify(transactionRepository, times(1)).findAll(pageable);
     }
 
@@ -85,7 +85,7 @@ class TransactionRepositoryGatewayTest {
         // Assert
         assertThat(result).isNotNull();
         assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isEqualTo(0);
+        assertThat(result.getTotalElements()).isZero();
         verify(transactionRepository, times(1)).findAll(pageable);
     }
 
@@ -124,8 +124,7 @@ class TransactionRepositoryGatewayTest {
         Transaction result = gateway.findTransactionById(transactionId);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(transaction);
+        assertThat(result).isNotNull().isEqualTo(transaction);
         verify(transactionRepository, times(1)).findById(transactionId);
         verify(entityMapper, times(1)).toDomain(entity);
     }
@@ -167,8 +166,7 @@ class TransactionRepositoryGatewayTest {
         Transaction result = gateway.createTransaction(inputTransaction);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(savedTransaction);
+        assertThat(result).isNotNull().isEqualTo(savedTransaction);
         verify(categoryRepository, times(1)).findById(incomeCategory.id());
         verify(transactionRepository, times(1)).save(any(TransactionEntity.class));
     }
@@ -193,8 +191,7 @@ class TransactionRepositoryGatewayTest {
         Transaction result = gateway.createTransaction(inputTransaction);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(savedTransaction);
+        assertThat(result).isNotNull().isEqualTo(savedTransaction);
         verify(categoryRepository, times(1)).findById(expenseCategory.id());
         verify(transactionRepository, times(1)).save(any(TransactionEntity.class));
     }
@@ -388,8 +385,7 @@ class TransactionRepositoryGatewayTest {
         Transaction result = gateway.updateTransaction(inputTransaction);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(updatedTransaction);
+        assertThat(result).isNotNull().isEqualTo(updatedTransaction);
         verify(categoryRepository, times(1)).findById(inputTransaction.category().id());
         verify(transactionRepository, times(1)).save(inputEntity);
     }
@@ -413,8 +409,7 @@ class TransactionRepositoryGatewayTest {
         Transaction result = gateway.updateTransaction(inputTransaction);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(updatedTransaction);
+        assertThat(result).isNotNull().isEqualTo(updatedTransaction);
         verify(categoryRepository, times(1)).findById(inputTransaction.category().id());
         verify(transactionRepository, times(1)).save(inputEntity);
     }
@@ -689,8 +684,7 @@ class TransactionRepositoryGatewayTest {
         List<CategorySummary> result = gateway.getCategorySummaries(month, year);
 
         // Assert
-        assertThat(result).hasSize(2);
-        assertThat(result).isEqualTo(expectedSummaries);
+        assertThat(result).hasSize(2).isEqualTo(expectedSummaries);
         verify(transactionRepository, times(1)).findCategorySummariesByMonthAndYear(month, year);
     }
 

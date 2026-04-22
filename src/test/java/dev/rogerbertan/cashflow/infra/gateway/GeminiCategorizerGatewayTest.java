@@ -30,7 +30,6 @@ class GeminiCategorizerGatewayTest {
         // Arrange
         when(aiProperties.isEnabled()).thenReturn(false);
         when(aiProperties.getApiKey()).thenReturn("test-api-key");
-        when(aiProperties.getModelName()).thenReturn("gemini-pro");
 
         GeminiCategorizerGateway gateway =
                 new GeminiCategorizerGateway(categoryGateway, aiProperties);
@@ -53,7 +52,6 @@ class GeminiCategorizerGatewayTest {
         // Arrange
         when(aiProperties.isEnabled()).thenReturn(true);
         when(aiProperties.getApiKey()).thenReturn("test-api-key");
-        when(aiProperties.getModelName()).thenReturn("gemini-pro");
         when(categoryGateway.findAllCategories()).thenReturn(Collections.emptyList());
 
         GeminiCategorizerGateway gateway =
@@ -78,7 +76,6 @@ class GeminiCategorizerGatewayTest {
         Category incomeCategory = TestDataFactory.createIncomeCategory();
         when(aiProperties.isEnabled()).thenReturn(true);
         when(aiProperties.getApiKey()).thenReturn("test-api-key");
-        when(aiProperties.getModelName()).thenReturn("gemini-pro");
         when(categoryGateway.findAllCategories()).thenReturn(List.of(incomeCategory));
 
         GeminiCategorizerGateway gateway =
@@ -97,7 +94,6 @@ class GeminiCategorizerGatewayTest {
     void suggestCategory_ShouldThrowException_WhenAPIKeyIsNull() {
         // Arrange
         when(aiProperties.getApiKey()).thenReturn(null);
-        when(aiProperties.getModelName()).thenReturn("gemini-pro");
 
         // Act & Assert
         assertThatThrownBy(() -> new GeminiCategorizerGateway(categoryGateway, aiProperties))
@@ -111,7 +107,6 @@ class GeminiCategorizerGatewayTest {
     void suggestCategory_ShouldThrowException_WhenAPIKeyIsEmpty() {
         // Arrange
         when(aiProperties.getApiKey()).thenReturn("");
-        when(aiProperties.getModelName()).thenReturn("gemini-pro");
 
         // Act & Assert
         assertThatThrownBy(() -> new GeminiCategorizerGateway(categoryGateway, aiProperties))

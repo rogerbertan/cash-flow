@@ -35,8 +35,7 @@ class FindCategoryByIdUseCaseTest {
         Category result = useCase.execute(categoryId);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(expectedCategory);
+        assertThat(result).isNotNull().isEqualTo(expectedCategory);
         verify(categoryGateway, times(1)).findCategoryById(categoryId);
     }
 

@@ -20,7 +20,6 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
 
     public GeminiInsightsGateway(AIProperties aiProperties) {
         this.aiProperties = aiProperties;
-        System.out.println("Using Gemini model for insights: " + aiProperties.getModelName());
 
         if (aiProperties.isEnabled()
                 && (aiProperties.getApiKey() != null && !aiProperties.getApiKey().isEmpty())) {
@@ -57,7 +56,7 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
         try {
             String aiResponse = callGeminiAPI(prompt);
             List<String> insights = parseInsights(aiResponse);
-            String summary = generateSummary(insights, aiResponse);
+            String summary = generateSummary(insights);
 
             return new SpendingInsights(insights, analysisData.period(), summary, aiResponse);
         } catch (Exception e) {
@@ -198,16 +197,16 @@ public class GeminiInsightsGateway implements AIInsightsGateway {
                 .toList();
     }
 
-    private String generateSummary(List<String> insights, String rawResponse) {
+    private String generateSummary(List<String> insights) {
         if (insights.isEmpty()) {
             return "No significant patterns detected";
         }
 
         if (insights.size() == 1) {
-            return insights.get(0);
+            return insights.getFirst();
         }
 
-        String firstInsight = insights.get(0);
+        String firstInsight = insights.getFirst();
         if (firstInsight.length() > 300) {
             return firstInsight.substring(0, 297) + "...";
         }

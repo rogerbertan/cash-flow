@@ -38,9 +38,7 @@ class FindAllCategoriesUseCaseTest {
         List<Category> result = useCase.execute();
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).hasSize(3);
-        assertThat(result).containsExactly(category1, category2, category3);
+        assertThat(result).isNotNull().hasSize(3).containsExactly(category1, category2, category3);
         verify(categoryGateway, times(1)).findAllCategories();
     }
 
@@ -53,8 +51,7 @@ class FindAllCategoriesUseCaseTest {
         List<Category> result = useCase.execute();
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEmpty();
+        assertThat(result).isNotNull().isEmpty();
         verify(categoryGateway, times(1)).findAllCategories();
     }
 }

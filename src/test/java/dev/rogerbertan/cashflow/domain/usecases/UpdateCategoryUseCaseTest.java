@@ -73,15 +73,15 @@ class UpdateCategoryUseCaseTest {
         Category inputCategory = new Category(1L, "Salary Updated", Type.INCOME, oldTimestamp);
 
         when(categoryGateway.findCategoryById(1L)).thenReturn(existingCategory);
-
-        ArgumentCaptor<Category> categoryCaptor = ArgumentCaptor.forClass(Category.class);
-        when(categoryGateway.updateCategory(categoryCaptor.capture()))
+        when(categoryGateway.updateCategory(any(Category.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        Category result = useCase.execute(inputCategory);
+        useCase.execute(inputCategory);
 
         // Assert
+        ArgumentCaptor<Category> categoryCaptor = ArgumentCaptor.forClass(Category.class);
+        verify(categoryGateway).updateCategory(categoryCaptor.capture());
         Category capturedCategory = categoryCaptor.getValue();
         assertThat(capturedCategory.createdAt()).isNotNull();
         assertThat(capturedCategory.createdAt())

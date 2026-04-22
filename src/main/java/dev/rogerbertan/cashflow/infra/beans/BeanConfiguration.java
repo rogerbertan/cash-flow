@@ -128,8 +128,8 @@ public class BeanConfiguration {
 
     @Bean
     public SuggestTransactionCategoryUseCase suggestTransactionCategoryUseCase(
-            AICategorizerGateway aiCategorizerGateway, CategoryGateway categoryGateway) {
-        return new SuggestTransactionCategoryUseCase(aiCategorizerGateway, categoryGateway);
+            AICategorizerGateway aiCategorizerGateway) {
+        return new SuggestTransactionCategoryUseCase(aiCategorizerGateway);
     }
 
     @Bean

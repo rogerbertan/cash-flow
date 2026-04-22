@@ -1,10 +1,8 @@
 package dev.rogerbertan.cashflow.infra.exception;
 
 import dev.rogerbertan.cashflow.infra.dto.ErrorResponse;
-
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

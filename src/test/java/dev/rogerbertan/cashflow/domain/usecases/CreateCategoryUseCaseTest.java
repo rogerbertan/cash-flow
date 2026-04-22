@@ -32,8 +32,7 @@ class CreateCategoryUseCaseTest {
         Category result = useCase.execute(inputCategory);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(savedCategory);
+        assertThat(result).isNotNull().isEqualTo(savedCategory);
         assertThat(result.id()).isEqualTo(1L);
         assertThat(result.name()).isEqualTo("Salary");
         assertThat(result.type()).isEqualTo(Type.INCOME);

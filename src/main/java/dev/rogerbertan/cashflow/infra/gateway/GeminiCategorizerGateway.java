@@ -20,7 +20,6 @@ public class GeminiCategorizerGateway implements AICategorizerGateway {
     public GeminiCategorizerGateway(CategoryGateway categoryGateway, AIProperties aiProperties) {
         this.categoryGateway = categoryGateway;
         this.aiProperties = aiProperties;
-        System.out.println("Using Gemini model: " + aiProperties.getModelName());
         this.geminiClient = initializeClient();
     }
 

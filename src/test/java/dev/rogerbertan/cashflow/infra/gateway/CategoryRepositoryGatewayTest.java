@@ -65,8 +65,7 @@ class CategoryRepositoryGatewayTest {
         List<Category> result = gateway.findAllCategories();
 
         // Assert
-        assertThat(result).hasSize(2);
-        assertThat(result).containsExactly(category1, category2);
+        assertThat(result).hasSize(2).containsExactly(category1, category2);
         verify(categoryRepository, times(1)).findAll();
         verify(entityMapper, times(1)).toDomain(entity1);
         verify(entityMapper, times(1)).toDomain(entity2);
@@ -78,7 +77,7 @@ class CategoryRepositoryGatewayTest {
         CategoryEntity entity = TestDataFactory.createIncomeCategoryEntity();
         Category category = TestDataFactory.createIncomeCategory();
 
-        when(categoryRepository.findAll()).thenReturn(Arrays.asList(entity));
+        when(categoryRepository.findAll()).thenReturn(List.of(entity));
         when(entityMapper.toDomain(entity)).thenReturn(category);
 
         // Act
@@ -86,7 +85,7 @@ class CategoryRepositoryGatewayTest {
 
         // Assert
         assertThat(result).hasSize(1);
-        assertThat(result.get(0)).isEqualTo(category);
+        assertThat(result.getFirst()).isEqualTo(category);
         verify(entityMapper, times(1)).toDomain(entity);
     }
 
@@ -106,8 +105,7 @@ class CategoryRepositoryGatewayTest {
         Category result = gateway.findCategoryById(categoryId);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(category);
+        assertThat(result).isNotNull().isEqualTo(category);
         verify(categoryRepository, times(1)).findById(categoryId);
         verify(entityMapper, times(1)).toDomain(entity);
     }
@@ -167,8 +165,7 @@ class CategoryRepositoryGatewayTest {
         Category result = gateway.createCategory(inputCategory);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(savedCategory);
+        assertThat(result).isNotNull().isEqualTo(savedCategory);
         verify(entityMapper, times(1)).toEntity(inputCategory);
         verify(categoryRepository, times(1)).save(inputEntity);
         verify(entityMapper, times(1)).toDomain(savedEntity);

@@ -97,7 +97,7 @@ class FindAllTransactionUseCaseTest {
         assertThat(result).isNotNull();
         assertThat(result.getContent()).hasSize(5);
         assertThat(result.getTotalElements()).isEqualTo(5);
-        assertThat(result.getNumber()).isEqualTo(0);
+        assertThat(result.getNumber()).isZero();
         verify(transactionGateway, times(1)).findAllTransactions(pageable);
     }
 
@@ -133,7 +133,7 @@ class FindAllTransactionUseCaseTest {
         // Assert
         assertThat(result).isNotNull();
         assertThat(result.getContent()).isEmpty();
-        assertThat(result.getTotalElements()).isEqualTo(0);
+        assertThat(result.getTotalElements()).isZero();
         verify(transactionGateway, times(1)).findAllTransactions(pageable);
     }
 }

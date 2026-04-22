@@ -46,8 +46,7 @@ class FindTransactionByIdUseCaseTest {
         Transaction result = useCase.execute(transactionId);
 
         // Assert
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(expectedTransaction);
+        assertThat(result).isNotNull().isEqualTo(expectedTransaction);
         verify(transactionGateway, times(1)).findTransactionById(transactionId);
     }
 

@@ -133,6 +133,6 @@ public class GenerateSpendingInsightsUseCase {
                                                 categoryName, BigDecimal.ZERO),
                                         expenseByCategory.getOrDefault(
                                                 categoryName, BigDecimal.ZERO)))
-                .collect(java.util.stream.Collectors.toList());
+                .toList();
     }
 }
