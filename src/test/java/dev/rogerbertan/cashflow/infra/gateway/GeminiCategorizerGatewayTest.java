@@ -120,9 +120,10 @@ class GeminiCategorizerGatewayTest {
         String result =
                 gateway.buildPrompt("grocery shopping", Type.EXPENSE, List.of(expenseCategory));
 
-        assertThat(result).contains(expenseCategory.name())
-                        .contains("grocery shopping")
-                        .contains("EXPENSE");
+        assertThat(result)
+                .contains(expenseCategory.name())
+                .contains("grocery shopping")
+                .contains("EXPENSE");
     }
 
     @Test
